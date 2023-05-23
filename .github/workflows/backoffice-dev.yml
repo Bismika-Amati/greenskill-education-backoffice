@@ -1,4 +1,4 @@
-name: CICD Frontend
+name: CICD Backoffice
 
 on:
   push:
