@@ -1,31 +1,93 @@
 'use client';
 
-import { OwnTable } from '@/components/organisms';
+import { OwnTable, useOwnPaginaiton } from '@/components/organisms';
+import { TProvinceResponse } from '@/modules/master-data/regions/provinces/entities';
+import { useDeleteProvince, useFetchProvinces } from '@/modules/master-data/regions/provinces/hooks';
+import { failedNotification, successNotification } from '@/utils/helpers/alert';
+import { showDeleteConfirm } from '@/utils/helpers/modal';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
+import { Button, Modal, Space } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import { useState } from 'react';
 
 export default () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { paginateParams, onChangePaginateParams } = useOwnPaginaiton();
+  const dataHook = useFetchProvinces({
+    ...paginateParams,
+  });
+
+  const deleteMutation = useDeleteProvince();
+  const onDelete = (id: TProvinceResponse['id']) => {
+    deleteMutation.mutate(id, {
+      onSuccess: () => {
+        dataHook.refetch();
+        successNotification();
+      },
+      onError: () => {
+        failedNotification();
+      },
+    });
+  };
+
+  const columns: ColumnsType<TProvinceResponse> = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+    },
+    {
+      title: 'Action',
+      fixed: 'right',
+      width: 100,
+      render: (_, record) => (
+        <Space>
+          <Button icon={<EditOutlined />} size="small" type="link" />
+          <Button
+            icon={<DeleteOutlined />}
+            danger
+            size="small"
+            type="link"
+            onClick={() =>
+              showDeleteConfirm({
+                onOk: () => onDelete(record.id),
+              })
+            }
+          />
+        </Space>
+      ),
+    },
+  ];
+
+  const handleOk = () => {
+    console.log('asc');
+  };
+
   return (
     <>
       <PageContainer
         header={{
           title: 'Provinces',
         }}
+        extra={[
+          <Button key="1" type="primary" icon={<PlusOutlined />} onClick={() => setIsModalOpen(true)}>
+            Add Item
+          </Button>,
+        ]}
       >
-        <OwnTable />
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit minus temporibus rerum laboriosam consequatur,
-        nemo soluta? Fuga quae provident, reprehenderit sint voluptate distinctio pariatur est natus dicta ipsam beatae?
-        Recusandae consequuntur numquam harum. Sunt asperiores sit error ut cumque ipsa tenetur facilis quaerat dolor
-        minus deleniti hic, alias voluptatem quidem possimus perspiciatis rerum, eius ipsum. Laudantium obcaecati velit,
-        atque earum, ut eligendi, cum ad quod sit quisquam eos dolor dolore libero vero explicabo voluptatem impedit
-        reprehenderit. Esse minus, enim incidunt nobis maxime magni, consectetur corrupti harum quia nulla officiis
-        tempora sit aliquam libero in quam animi illum? Tempore consequuntur distinctio voluptates repellendus sint
-        itaque quis veniam? Eaque tempore, minima consequatur incidunt illum porro obcaecati asperiores, mollitia
-        pariatur recusandae adipisci quos nisi amet, explicabo deleniti! Id quae dolorem exercitationem, ab ut at
-        obcaecati, aut fuga necessitatibus veniam expedita, quod est cum. Ab, doloremque voluptate quaerat, voluptatem
-        pariatur sint quibusdam qui molestias delectus quas quo ad fugiat vero necessitatibus aspernatur rem? Placeat,
-        similique fuga voluptas possimus accusamus ex? Velit dicta incidunt accusantium odit impedit ab amet facilis hic
-        eaque, recusandae repellat a obcaecati cumque iste quis corporis exercitationem quod enim. Velit in dolorum
-        tempore inventore aspernatur asperiores natus itaque molestias explicabo consectetur!
+        <OwnTable
+          columns={columns}
+          dataSource={dataHook.data?.data}
+          meta={dataHook.data?.meta}
+          onChange={onChangePaginateParams}
+        />
+
+        <Modal title="Form" open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
       </PageContainer>
     </>
   );
