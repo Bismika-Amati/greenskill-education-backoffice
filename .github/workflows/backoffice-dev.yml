@@ -28,9 +28,6 @@ jobs:
             git config --global user.name "Bismika Amati"
             git fetch
             git pull origin develop --no-rebase
-            # sudo docker stop $IMAGE_NAME
-            # sudo docker rm $IMAGE_NAME
-            # sudo docker rmi $IMAGE_NAME:$IMAGE_TAG
             sudo docker system prune
             sudo docker build --no-cache --build-arg NEXT_PUBLIC_BASE_URL="http://34.128.92.185:4002" --build-arg NEXT_PUBLIC_API="http://34.128.92.185:3000/api" -t $IMAGE_NAME:$IMAGE_TAG -f Dockerfile .
             sudo docker run --name $IMAGE_NAME -p 4002:4000 -d $IMAGE_NAME:$IMAGE_TAG
