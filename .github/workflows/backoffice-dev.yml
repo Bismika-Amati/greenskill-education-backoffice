@@ -13,8 +13,8 @@ jobs:
       - name: Deploy on Development
         uses: appleboy/ssh-action@master
         env:
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-          IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME_DEVELOP }}
+          IMAGE_TAG: ${{ secrets.IMAGE_TAG_DEVELOP }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
