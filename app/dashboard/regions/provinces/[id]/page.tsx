@@ -7,10 +7,20 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
 
-export default () => {
-  const router = useRouter();
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
 
-  const dataHook = useFetchProvinceDetails();
+export default ({ params }: PageProps) => {
+  const id = params.id;
+
+  const dataHook = useFetchProvinceDetails(id, {
+    onSuccess: (data) => {
+      console.log('asc ', data);
+    },
+  });
 
   const [form] = Form.useForm<TProvinceForm>();
   const handleOk = () => {
