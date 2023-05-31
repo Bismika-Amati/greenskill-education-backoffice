@@ -27,7 +27,6 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         // const { username, password } = credentials;
-        console.log({ credentials });
         const res = await axios
           .post(`${process.env.NEXT_PUBLIC_API_URL}/v1.0.0/auth/login`, {
             email: credentials?.email,
@@ -40,10 +39,8 @@ export const authOptions: NextAuthOptions = {
             console.log(JSON.stringify(err));
           });
 
-        console.log(res);
-
         if (res && res.data) {
-          return res.data;
+          return res.data.data;
         }
 
         return null;
