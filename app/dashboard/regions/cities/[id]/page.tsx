@@ -1,7 +1,7 @@
 'use client';
 
-import { PageProps } from '@/.next/types/app/layout';
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
+import { TPageProps } from '@/modules/commons/entities';
 import { TCityForm } from '@/modules/master-data/regions/cities/entities';
 import { useFetchCityDetails, useUpdateCity } from '@/modules/master-data/regions/cities/hooks';
 import { useOptionProvinces } from '@/modules/master-data/regions/provinces/utils';
@@ -11,7 +11,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
 
-export default ({ params }: PageProps) => {
+export default ({ params }: TPageProps) => {
   const ID = params.id;
 
   const router = useRouter();

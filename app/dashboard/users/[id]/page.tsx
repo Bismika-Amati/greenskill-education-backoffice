@@ -1,7 +1,7 @@
 'use client';
 
-import { PageProps } from '@/.next/types/app/layout';
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
+import { TPageProps } from '@/modules/commons/entities';
 import { useOptionCities } from '@/modules/master-data/regions/cities/utils';
 import { useOptionDistricts } from '@/modules/master-data/regions/districts/utils';
 import { useOptionProvinces } from '@/modules/master-data/regions/provinces/utils';
@@ -14,7 +14,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
 
-export default ({ params }: PageProps) => {
+export default ({ params }: TPageProps) => {
   const ID = params.id;
 
   const router = useRouter();
@@ -69,7 +69,7 @@ export default ({ params }: PageProps) => {
     <>
       <PageContainer
         header={{
-          title: 'Update User',
+          title: `User Details (${detailHook.data?.fullname})`,
         }}
       >
         <OwnRow>

@@ -1,7 +1,7 @@
 'use client';
 
-import { PageProps } from '@/.next/types/app/layout';
 import { OwnRow } from '@/components/atoms';
+import { TPageProps } from '@/modules/commons/entities';
 import { TProvinceForm } from '@/modules/master-data/regions/provinces/entities';
 import { useFetchProvinceDetails, useUpdateProvince } from '@/modules/master-data/regions/provinces/hooks';
 import { failedNotification, successNotification } from '@/utils/helpers/alert';
@@ -10,7 +10,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
 
-export default ({ params }: PageProps) => {
+export default ({ params }: TPageProps) => {
   const ID = params.id;
 
   const router = useRouter();
