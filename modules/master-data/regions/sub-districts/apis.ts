@@ -1,11 +1,9 @@
 import { versionApi } from '@/modules/commons/constants';
-import { TPaginateParams, TPaginateResponse, TResponseData } from '@/modules/commons/entities';
+import { TPaginateResponse, TResponseData } from '@/modules/commons/entities';
 import axios from '@/utils/axios';
-import { TSubDistrictResponse, TSubDistrictForm, TUpdateSubDistrictParams } from './entities';
+import { TSubDistrictResponse, TSubDistrictForm, TUpdateSubDistrictParams, TSubDistrictsParams } from './entities';
 
-export const fetchCities = async (
-  params: TPaginateParams & { provinceId?: string },
-): Promise<TPaginateResponse<TSubDistrictResponse>> => {
+export const fetchCities = async (params: TSubDistrictsParams): Promise<TPaginateResponse<TSubDistrictResponse>> => {
   const result = await axios.get<TPaginateResponse<TSubDistrictResponse>>(
     `${versionApi.VERSION_V1}/master-data/regions/sub-districts`,
     { params },

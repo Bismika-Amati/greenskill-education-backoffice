@@ -1,14 +1,12 @@
-import { TPaginateParams, TPaginateResponse, TResponseData } from '@/modules/commons/entities';
-import { TProvinceForm, TProvinceResponse, TUpdateProvinceParams } from './entities';
+import { TPaginateResponse, TResponseData } from '@/modules/commons/entities';
+import { TProvinceForm, TProvincesParams, TProvinceResponse, TUpdateProvinceParams } from './entities';
 import { versionApi } from '@/modules/commons/constants';
 import axios from '@/utils/axios';
 
-export const fetchProvinces = async (params: TPaginateParams): Promise<TPaginateResponse<TProvinceResponse>> => {
+export const fetchProvinces = async (params: TProvincesParams): Promise<TPaginateResponse<TProvinceResponse>> => {
   const result = await axios.get<TPaginateResponse<TProvinceResponse>>(
     `${versionApi.VERSION_V1}/master-data/regions/provinces`,
-    {
-      params,
-    },
+    { params },
   );
   return result.data;
 };
