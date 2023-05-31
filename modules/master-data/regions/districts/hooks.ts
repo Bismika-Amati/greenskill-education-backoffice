@@ -1,6 +1,6 @@
 import { TPaginateParams, TPaginateResponse, TResponseError } from '@/modules/commons/entities';
 import { UseMutationResult, UseQueryOptions, UseQueryResult, useMutation, useQuery } from '@tanstack/react-query';
-import { createDistrict, deleteDistrict, fetchDistrictDetails, fetchDistricts, updateDistrict } from './api';
+import { createDistrict, deleteDistrict, fetchDistrictDetails, fetchDistricts, updateDistrict } from './apis';
 import { TDistrictForm, TDistrictResponse, TUpdateDistrictParams } from './entities';
 
 export const useFetchDistricts = (
