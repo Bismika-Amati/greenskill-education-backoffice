@@ -41,7 +41,9 @@ export default () => {
       width: 100,
       render: (_, record) => (
         <Space>
-          <Button icon={<EditOutlined />} size="small" type="link" />
+          <Link href={`/dashboard/regions/provinces/${record.id}`}>
+            <Button icon={<EditOutlined />} size="small" type="link" />
+          </Link>
           <Button
             icon={<DeleteOutlined />}
             danger
@@ -73,6 +75,7 @@ export default () => {
         ]}
       >
         <OwnTable
+          loading={dataHook.isFetching}
           columns={columns}
           dataSource={dataHook.data?.data}
           meta={dataHook.data?.meta}

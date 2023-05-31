@@ -3,6 +3,7 @@
 import { MenuUnfoldOutlined, MenuFoldOutlined, PieChartOutlined, HomeOutlined } from '@ant-design/icons';
 import { Layout, theme, Menu, Typography, Button } from 'antd';
 import { MenuItemType } from 'antd/es/menu/hooks/useItems';
+import { signOut } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -92,6 +93,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               height: 64,
             }}
           />
+
+          <Button onClick={signOut}>Logout</Button>
         </Header>
 
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>{children}</Content>

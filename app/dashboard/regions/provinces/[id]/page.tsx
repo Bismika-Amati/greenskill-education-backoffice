@@ -2,7 +2,8 @@
 
 import { OwnRow } from '@/components/atoms';
 import { TProvinceForm } from '@/modules/master-data/regions/provinces/entities';
-import { useFetchProvinceDetails } from '@/modules/master-data/regions/provinces/hooks';
+import { useFetchProvinceDetails, useUpdateProvince } from '@/modules/master-data/regions/provinces/hooks';
+import { failedNotification, successNotification } from '@/utils/helpers/alert';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
@@ -14,28 +15,42 @@ type PageProps = {
 };
 
 export default ({ params }: PageProps) => {
-  const id = params.id;
+  const ID = params.id;
 
-  const dataHook = useFetchProvinceDetails(id, {
+  const router = useRouter();
+
+  const detailHook = useFetchProvinceDetails(ID, {
     onSuccess: (data) => {
-      console.log('asc ', data);
+      form.setFieldValue('name', data.name);
+      console.log(data);
     },
   });
+  const updateMutation = useUpdateProvince();
 
   const [form] = Form.useForm<TProvinceForm>();
-  const handleOk = () => {
-    console.log('asc', form.getFieldsValue());
-  };
-
   const onFinish = (values: TProvinceForm) => {
-    console.log('ascac', values);
+    updateMutation.mutate(
+      {
+        id: ID,
+        data: values,
+      },
+      {
+        onSuccess: () => {
+          router.push('/dashboard/regions/provinces');
+          successNotification();
+        },
+        onError: () => {
+          failedNotification();
+        },
+      },
+    );
   };
 
   return (
     <>
       <PageContainer
         header={{
-          title: `Province Details`,
+          title: `Province Details (${detailHook.data?.name})`,
         }}
       >
         <OwnRow>
@@ -49,7 +64,7 @@ export default ({ params }: PageProps) => {
                 <Form.Item>
                   <Space align="end">
                     <Button type="primary" htmlType="submit">
-                      Submit
+                      Save
                     </Button>
                   </Space>
                 </Form.Item>
