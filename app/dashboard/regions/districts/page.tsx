@@ -2,17 +2,33 @@
 
 import { OwnTable, useOwnPaginaiton } from '@/components/organisms';
 import { TDistrictResponse } from '@/modules/master-data/regions/districts/entities';
-import { useFetchDistricts } from '@/modules/master-data/regions/districts/hooks';
+import { useDeleteDistrict, useFetchDistricts } from '@/modules/master-data/regions/districts/hooks';
+import { failedNotification, successNotification } from '@/utils/helpers/alert';
+import { showDeleteConfirm } from '@/utils/helpers/modal';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Space } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import Link from 'next/link';
 
 export default () => {
   const { paginateParams, onChangePaginateParams } = useOwnPaginaiton();
   const dataHook = useFetchDistricts({
     ...paginateParams,
   });
+
+  const deleteMutation = useDeleteDistrict();
+  const onDelete = (id: TDistrictResponse['id']) => {
+    deleteMutation.mutate(id, {
+      onSuccess: () => {
+        dataHook.refetch();
+        successNotification();
+      },
+      onError: () => {
+        failedNotification();
+      },
+    });
+  };
 
   const columns: ColumnsType<TDistrictResponse> = [
     {
@@ -25,17 +41,19 @@ export default () => {
       width: 100,
       render: (_, record) => (
         <Space>
-          <Button icon={<EditOutlined />} size="small" type="link" />
+          <Link href={`/dashboard/regions/districts/${record.id}`}>
+            <Button icon={<EditOutlined />} size="small" type="link" />
+          </Link>
           <Button
             icon={<DeleteOutlined />}
             danger
             size="small"
             type="link"
-            // onClick={() =>
-            //   showDeleteConfirm({
-            //     onOk: () => onDelete(record.id),
-            //   })
-            // }
+            onClick={() =>
+              showDeleteConfirm({
+                onOk: () => onDelete(record.id),
+              })
+            }
           />
         </Space>
       ),
@@ -45,15 +63,18 @@ export default () => {
   return (
     <PageContainer
       header={{
-        title: 'Provinces',
+        title: 'Districts',
       }}
       extra={[
-        <Button key="1" type="primary" icon={<PlusOutlined />}>
-          Add Item
-        </Button>,
+        <Link key="1" href="/dashboard/regions/districts/create">
+          <Button type="primary" icon={<PlusOutlined />}>
+            Add Item
+          </Button>
+        </Link>,
       ]}
     >
       <OwnTable
+        loading={dataHook.isFetching}
         columns={columns}
         dataSource={dataHook.data?.data}
         meta={dataHook.data?.meta}

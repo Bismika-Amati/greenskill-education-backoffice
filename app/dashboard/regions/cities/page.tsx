@@ -63,7 +63,7 @@ export default () => {
   return (
     <PageContainer
       header={{
-        title: 'Provinces',
+        title: 'Cities',
       }}
       extra={[
         <Link key="1" href="/dashboard/regions/cities/create">

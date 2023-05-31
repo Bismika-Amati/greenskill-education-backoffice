@@ -13,7 +13,7 @@ export type TDistrictsParams = TPaginateParams & {
 
 export type TDistrictForm = {
   name: string;
-  cityID: string;
+  cityId: string;
 };
 
 export type TUpdateDistrictParams = {

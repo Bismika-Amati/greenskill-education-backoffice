@@ -19,7 +19,7 @@ export const useFetchDistrictDetails = (
   options?: UseQueryOptions<TDistrictResponse, TResponseError>,
 ): UseQueryResult<TDistrictResponse> => {
   return useQuery({
-    queryKey: ['fetch-masterdata-city-details', id],
+    queryKey: ['fetch-masterdata-district-details', id],
     queryFn: () => fetchDistrictDetails(id),
     enabled: !!id,
     ...options,
