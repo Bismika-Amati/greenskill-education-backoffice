@@ -1,8 +1,8 @@
 'use client';
 
 import { OwnTable, useOwnPaginaiton } from '@/components/organisms';
-import { TProvinceResponse } from '@/modules/master-data/regions/provinces/entities';
-import { useDeleteProvince, useFetchProvinces } from '@/modules/master-data/regions/provinces/hooks';
+import { TVillageResponse } from '@/modules/master-data/villages/entities';
+import { useDeleteVillage, useFetchVillages } from '@/modules/master-data/villages/hooks';
 import { failedNotification, successNotification } from '@/utils/helpers/alert';
 import { showDeleteConfirm } from '@/utils/helpers/modal';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
@@ -13,12 +13,12 @@ import Link from 'next/link';
 
 export default () => {
   const { paginateParams, onChangePaginateParams } = useOwnPaginaiton();
-  const dataHook = useFetchProvinces({
+  const dataHook = useFetchVillages({
     ...paginateParams,
   });
 
-  const deleteMutation = useDeleteProvince();
-  const onDelete = (id: TProvinceResponse['id']) => {
+  const deleteMutation = useDeleteVillage();
+  const onDelete = (id: TVillageResponse['id']) => {
     deleteMutation.mutate(id, {
       onSuccess: () => {
         dataHook.refetch();
@@ -30,7 +30,7 @@ export default () => {
     });
   };
 
-  const columns: ColumnsType<TProvinceResponse> = [
+  const columns: ColumnsType<TVillageResponse> = [
     {
       title: 'Name',
       dataIndex: 'name',
@@ -41,7 +41,7 @@ export default () => {
       width: 100,
       render: (_, record) => (
         <Space>
-          <Link href={`/dashboard/regions/provinces/${record.id}`}>
+          <Link href={`/dashboard/villages/${record.id}`}>
             <Button icon={<EditOutlined />} size="small" type="link" />
           </Link>
           <Button
@@ -64,10 +64,10 @@ export default () => {
     <>
       <PageContainer
         header={{
-          title: 'Provinces',
+          title: 'Villages',
         }}
         extra={[
-          <Link key="1" href="/dashboard/regions/provinces/create">
+          <Link key="1" href="/dashboard/villages/create">
             <Button type="primary" icon={<PlusOutlined />}>
               Add Item
             </Button>

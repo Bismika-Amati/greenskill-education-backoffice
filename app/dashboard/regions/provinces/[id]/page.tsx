@@ -4,6 +4,7 @@ import { OwnRow } from '@/components/atoms';
 import { TProvinceForm } from '@/modules/master-data/regions/provinces/entities';
 import { useFetchProvinceDetails, useUpdateProvince } from '@/modules/master-data/regions/provinces/hooks';
 import { failedNotification, successNotification } from '@/utils/helpers/alert';
+import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
@@ -30,6 +31,7 @@ export default ({ params }: PageProps) => {
 
   const [form] = Form.useForm<TProvinceForm>();
   const onFinish = (values: TProvinceForm) => {
+    resetErrorForm(form);
     updateMutation.mutate(
       {
         id: ID,
@@ -40,8 +42,9 @@ export default ({ params }: PageProps) => {
           router.push('/dashboard/regions/provinces');
           successNotification();
         },
-        onError: () => {
+        onError: (data) => {
           failedNotification();
+          setErrorForm(form, data.message);
         },
       },
     );

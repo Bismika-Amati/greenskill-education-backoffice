@@ -31,6 +31,7 @@ const menus: MenuItemType[] = [
     getItem('District', '/dashboard/regions/districts'),
     getItem('Sub District', '/dashboard/regions/sub-districts'),
   ]),
+  getItem('Village', '/dashboard/villages', <HomeOutlined />),
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -43,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
 
   const getOpenMenus = () => {
-    const found = menus.filter((item) => pathname.includes(String(item.key))).pop();
+    const found = menus.filter((item) => pathname?.includes(String(item.key))).pop();
 
     return [String(found?.key)];
   };
@@ -71,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Menu
               theme="dark"
               mode="inline"
-              defaultSelectedKeys={[pathname]}
+              defaultSelectedKeys={[pathname ?? '']}
               defaultOpenKeys={getOpenMenus()}
               items={menus || []}
               onClick={(item) => {

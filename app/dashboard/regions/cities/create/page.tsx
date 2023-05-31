@@ -5,6 +5,7 @@ import { TCityForm } from '@/modules/master-data/regions/cities/entities';
 import { useCreateCity } from '@/modules/master-data/regions/cities/hooks';
 import { useOptionProvinces } from '@/modules/master-data/regions/provinces/utils';
 import { successNotification, failedNotification } from '@/utils/helpers/alert';
+import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
@@ -17,13 +18,16 @@ export default () => {
 
   const [form] = Form.useForm<TCityForm>();
   const onFinish = (values: TCityForm) => {
+    resetErrorForm(form);
+
     createMutation.mutate(values, {
       onSuccess: () => {
         router.push('/dashboard/regions/cities');
         successNotification();
       },
-      onError: () => {
+      onError: (data) => {
         failedNotification();
+        setErrorForm(form, data.message);
       },
     });
   };
