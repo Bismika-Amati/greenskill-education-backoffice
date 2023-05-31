@@ -1,9 +1,9 @@
 'use client';
 
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
-import { TDistrictForm } from '@/modules/master-data/regions/districts/entities';
-import { useCreateDistrict } from '@/modules/master-data/regions/districts/hooks';
-import { useOptionCities } from '@/modules/master-data/regions/cities/utils';
+import { TSubDistrictForm } from '@/modules/master-data/regions/sub-districts/entities';
+import { useCreateSubDistrict } from '@/modules/master-data/regions/sub-districts/hooks';
+import { useOptionDistricts } from '@/modules/master-data/regions/districts/utils';
 import { successNotification, failedNotification } from '@/utils/helpers/alert';
 import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
 import { PageContainer } from '@ant-design/pro-components';
@@ -13,16 +13,16 @@ import { useRouter } from 'next/navigation';
 export default () => {
   const router = useRouter();
 
-  const { cityOptions, cityOptionDataHook } = useOptionCities();
-  const createMutation = useCreateDistrict();
+  const { districtOptions, districtOptionDataHook } = useOptionDistricts();
+  const createMutation = useCreateSubDistrict();
 
-  const [form] = Form.useForm<TDistrictForm>();
-  const onFinish = (values: TDistrictForm) => {
+  const [form] = Form.useForm<TSubDistrictForm>();
+  const onFinish = (values: TSubDistrictForm) => {
     resetErrorForm(form);
 
     createMutation.mutate(values, {
       onSuccess: () => {
-        router.push('/dashboard/regions/districts');
+        router.push('/dashboard/regions/sub-districts');
         successNotification();
       },
       onError: (data) => {
@@ -36,7 +36,7 @@ export default () => {
     <>
       <PageContainer
         header={{
-          title: 'Create District',
+          title: 'Create SubD istrict',
         }}
       >
         <OwnRow>
@@ -47,12 +47,12 @@ export default () => {
                   <Input placeholder="Name" />
                 </Form.Item>
 
-                <Form.Item name="cityId" label="City" rules={[{ required: true }]}>
+                <Form.Item name="districtId" label="District" rules={[{ required: true }]}>
                   <OwnSearchSelect
-                    options={cityOptions.options}
-                    onSearch={cityOptions.setSearch}
-                    fetching={cityOptionDataHook.isFetching}
-                    placeholder="City"
+                    options={districtOptions.options}
+                    onSearch={districtOptions.setSearch}
+                    fetching={districtOptionDataHook.isFetching}
+                    placeholder="District"
                   />
                 </Form.Item>
 
