@@ -1,8 +1,9 @@
 'use client';
 
-import { OwnRow } from '@/components/atoms';
-import { TProvinceForm } from '@/modules/master-data/regions/provinces/entities';
-import { useFetchProvinceDetails, useUpdateProvince } from '@/modules/master-data/regions/provinces/hooks';
+import { OwnRow, OwnSearchSelect } from '@/components/atoms';
+import { TCityForm } from '@/modules/master-data/regions/cities/entities';
+import { useFetchCityDetails, useUpdateCity } from '@/modules/master-data/regions/cities/hooks';
+import { useOptionProvinces } from '@/modules/master-data/regions/provinces/utils';
 import { failedNotification, successNotification } from '@/utils/helpers/alert';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
@@ -19,17 +20,19 @@ export default ({ params }: PageProps) => {
 
   const router = useRouter();
 
-  const detailHook = useFetchProvinceDetails(ID, {
+  const { provinceOptions, provinceOptionDataHook } = useOptionProvinces();
+  const detailHook = useFetchCityDetails(ID, {
     onSuccess: (data) => {
       form.setFieldsValue({
         name: data.name,
+        provinceId: data.province.id,
       });
     },
   });
-  const updateMutation = useUpdateProvince();
+  const updateMutation = useUpdateCity();
 
-  const [form] = Form.useForm<TProvinceForm>();
-  const onFinish = (values: TProvinceForm) => {
+  const [form] = Form.useForm<TCityForm>();
+  const onFinish = (values: TCityForm) => {
     updateMutation.mutate(
       {
         id: ID,
@@ -37,7 +40,7 @@ export default ({ params }: PageProps) => {
       },
       {
         onSuccess: () => {
-          router.push('/dashboard/regions/provinces');
+          router.push('/dashboard/regions/cities');
           successNotification();
         },
         onError: () => {
@@ -51,7 +54,7 @@ export default ({ params }: PageProps) => {
     <>
       <PageContainer
         header={{
-          title: `Province Details (${detailHook.data?.name})`,
+          title: `City Details (${detailHook.data?.name})`,
         }}
       >
         <OwnRow>
@@ -59,7 +62,16 @@ export default ({ params }: PageProps) => {
             <Card>
               <Form form={form} layout="vertical" onFinish={onFinish}>
                 <Form.Item name="name" label="Name" rules={[{ required: true }]}>
-                  <Input placeholder="Name" />
+                  <Input placeholder="name" />
+                </Form.Item>
+
+                <Form.Item name="provinceId" label="Province" rules={[{ required: true }]}>
+                  <OwnSearchSelect
+                    options={provinceOptions.options}
+                    onSearch={provinceOptions.setSearch}
+                    fetching={provinceOptionDataHook.isFetching}
+                    placeholder="Province"
+                  />
                 </Form.Item>
 
                 <Form.Item>

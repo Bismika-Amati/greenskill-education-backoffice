@@ -30,6 +30,5 @@ export type TPaginateParams = {
   page?: number;
   orderBy?: string;
   orderType?: 'asc' | 'desc';
-  whereBy?: string;
-  whereVal?: string;
+  search?: string;
 };

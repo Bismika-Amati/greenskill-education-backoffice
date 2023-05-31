@@ -1,8 +1,9 @@
 'use client';
 
-import { OwnRow } from '@/components/atoms';
-import { TProvinceForm } from '@/modules/master-data/regions/provinces/entities';
-import { useCreateProvince } from '@/modules/master-data/regions/provinces/hooks';
+import { OwnRow, OwnSearchSelect } from '@/components/atoms';
+import { TCityForm } from '@/modules/master-data/regions/cities/entities';
+import { useCreateCity } from '@/modules/master-data/regions/cities/hooks';
+import { useOptionProvinces } from '@/modules/master-data/regions/provinces/utils';
 import { successNotification, failedNotification } from '@/utils/helpers/alert';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
@@ -11,13 +12,14 @@ import { useRouter } from 'next/navigation';
 export default () => {
   const router = useRouter();
 
-  const createMutation = useCreateProvince();
+  const { provinceOptions, provinceOptionDataHook } = useOptionProvinces();
+  const createMutation = useCreateCity();
 
-  const [form] = Form.useForm<TProvinceForm>();
-  const onFinish = (values: TProvinceForm) => {
+  const [form] = Form.useForm<TCityForm>();
+  const onFinish = (values: TCityForm) => {
     createMutation.mutate(values, {
       onSuccess: () => {
-        router.push('/dashboard/regions/provinces');
+        router.push('/dashboard/regions/cities');
         successNotification();
       },
       onError: () => {
@@ -30,7 +32,7 @@ export default () => {
     <>
       <PageContainer
         header={{
-          title: 'Create Province',
+          title: 'Create City',
         }}
       >
         <OwnRow>
@@ -39,6 +41,15 @@ export default () => {
               <Form form={form} layout="vertical" onFinish={onFinish}>
                 <Form.Item name="name" label="Name" rules={[{ required: true }]}>
                   <Input placeholder="Name" />
+                </Form.Item>
+
+                <Form.Item name="provinceId" label="Province" rules={[{ required: true }]}>
+                  <OwnSearchSelect
+                    options={provinceOptions.options}
+                    onSearch={provinceOptions.setSearch}
+                    fetching={provinceOptionDataHook.isFetching}
+                    placeholder="Province"
+                  />
                 </Form.Item>
 
                 <Form.Item>
