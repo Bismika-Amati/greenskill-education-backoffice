@@ -22,3 +22,22 @@ export type TUserResponse = {
   updatedAt: string;
   deletedAt: string;
 };
+
+export type TUserForm = {
+  fullname: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  roleId: string;
+  provinceId: string;
+  cityId: string;
+  districtId: string;
+  subDistrictId: string;
+  postcode: string;
+  address: string;
+};
+
+export type TUpdateUserParams = {
+  id: TUserResponse['id'];
+  data: TUserForm;
+};
