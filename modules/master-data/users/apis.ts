@@ -1,9 +1,9 @@
-import { TPaginateParams, TPaginateResponse, TResponseData } from '@/modules/commons/entities';
-import { TUserForm, TUserResponse, TUpdateUserParams } from './entities';
+import { TPaginateResponse, TResponseData } from '@/modules/commons/entities';
+import { TUserForm, TUserResponse, TUpdateUserParams, TUsersParams } from './entities';
 import { versionApi } from '@/modules/commons/constants';
 import axios from '@/utils/axios';
 
-export const fetchUsers = async (params: TPaginateParams): Promise<TPaginateResponse<TUserResponse>> => {
+export const fetchUsers = async (params: TUsersParams): Promise<TPaginateResponse<TUserResponse>> => {
   const result = await axios.get<TPaginateResponse<TUserResponse>>(`${versionApi.VERSION_V1}/master-data/users`, {
     params,
   });

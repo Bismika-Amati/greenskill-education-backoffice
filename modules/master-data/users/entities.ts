@@ -1,3 +1,4 @@
+import { TPaginateParams } from '@/modules/commons/entities';
 import { TCityResponse } from '../regions/cities/entities';
 import { TDistrictResponse } from '../regions/districts/entities';
 import { TProvinceResponse } from '../regions/provinces/entities';
@@ -22,6 +23,8 @@ export type TUserResponse = {
   updatedAt: string;
   deletedAt: string;
 };
+
+export type TUsersParams = TPaginateParams;
 
 export type TUserForm = {
   fullname: string;

@@ -1,6 +1,14 @@
 'use client';
 
-import { MenuUnfoldOutlined, MenuFoldOutlined, PieChartOutlined, HomeOutlined } from '@ant-design/icons';
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  PieChartOutlined,
+  HomeOutlined,
+  GlobalOutlined,
+  KeyOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Layout, theme, Menu, Typography, Button } from 'antd';
 import { MenuItemType } from 'antd/es/menu/hooks/useItems';
 import { signOut } from 'next-auth/react';
@@ -25,13 +33,15 @@ function getItem(
 
 const menus: MenuItemType[] = [
   getItem('Dashboard', '/dashboard', <PieChartOutlined />),
-  getItem('Region', '/dashboard/regions', <HomeOutlined />, [
+  getItem('Village', '/dashboard/villages', <HomeOutlined />),
+  getItem('Region', '/dashboard/regions', <GlobalOutlined />, [
     getItem('Province', '/dashboard/regions/provinces'),
     getItem('City', '/dashboard/regions/cities'),
     getItem('District', '/dashboard/regions/districts'),
     getItem('Sub District', '/dashboard/regions/sub-districts'),
   ]),
-  getItem('Village', '/dashboard/villages', <HomeOutlined />),
+  getItem('Role', '/dashboard/roles', <KeyOutlined />),
+  getItem('User', '/dashboard/users', <UserOutlined />),
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,9 +1,9 @@
-import { TPaginateParams, TPaginateResponse, TResponseData } from '@/modules/commons/entities';
-import { TRoleForm, TRoleResponse, TUpdateRoleParams } from './entities';
+import { TPaginateResponse, TResponseData } from '@/modules/commons/entities';
+import { TRoleForm, TRoleResponse, TRolesParams, TUpdateRoleParams } from './entities';
 import { versionApi } from '@/modules/commons/constants';
 import axios from '@/utils/axios';
 
-export const fetchRoles = async (params: TPaginateParams): Promise<TPaginateResponse<TRoleResponse>> => {
+export const fetchRoles = async (params: TRolesParams): Promise<TPaginateResponse<TRoleResponse>> => {
   const result = await axios.get<TPaginateResponse<TRoleResponse>>(`${versionApi.VERSION_V1}/master-data/roles`, {
     params,
   });
