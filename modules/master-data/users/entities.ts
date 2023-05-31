@@ -10,7 +10,7 @@ export type TUserResponse = {
   fullname: string;
   email: string;
   password: string;
-  phoneNumber: number;
+  phoneNumber: string;
   photo: string;
   role: TRoleResponse;
   province: TProvinceResponse;
