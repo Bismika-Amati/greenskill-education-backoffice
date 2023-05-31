@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useFetchCities } from './hooks';
 import { SelectProps } from 'antd';
+import { TCitiesParams } from './entities';
 
-export const useOptionCities = () => {
-  const [search, setSearch] = useState('');
+export const useOptionCities = (params?: TCitiesParams) => {
+  const [search, setSearch] = useState(params?.search ?? '');
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
   const cityDataHook = useFetchCities(
-    { search },
+    { ...params, search },
     {
       onSuccess: (data) => {
         setOptions(

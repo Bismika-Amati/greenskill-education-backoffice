@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useFetchProvinces } from './hooks';
 import { SelectProps } from 'antd';
+import { TProvincesParams } from './entities';
 
-export const useOptionProvinces = () => {
-  const [search, setSearch] = useState('');
+export const useOptionProvinces = (params?: TProvincesParams) => {
+  const [search, setSearch] = useState(params?.search ?? '');
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
   const provinceDataHook = useFetchProvinces(
-    { search },
+    { ...params, search },
     {
       onSuccess: (data) => {
         setOptions(

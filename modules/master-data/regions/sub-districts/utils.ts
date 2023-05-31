@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useFetchSubDistricts } from './hooks';
 import { SelectProps } from 'antd';
+import { TSubDistrictsParams } from './entities';
 
-export const useOptionSubDistricts = () => {
-  const [search, setSearch] = useState('');
+export const useOptionSubDistricts = (params?: TSubDistrictsParams) => {
+  const [search, setSearch] = useState(params?.search ?? '');
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
   const subDistrictDataHook = useFetchSubDistricts(
-    { search },
+    { ...params, search },
     {
       onSuccess: (data) => {
         setOptions(

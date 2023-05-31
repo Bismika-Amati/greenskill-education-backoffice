@@ -32,3 +32,9 @@ export type TPaginateParams = {
   orderType?: 'asc' | 'desc';
   search?: string;
 };
+
+export type TPageProps = {
+  params: {
+    id: string;
+  };
+};

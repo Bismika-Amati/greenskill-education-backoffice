@@ -1,5 +1,6 @@
 'use client';
 
+import { PageProps } from '@/.next/types/app/layout';
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
 import { TCityForm } from '@/modules/master-data/regions/cities/entities';
 import { useFetchCityDetails, useUpdateCity } from '@/modules/master-data/regions/cities/hooks';
@@ -9,12 +10,6 @@ import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
-
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
 
 export default ({ params }: PageProps) => {
   const ID = params.id;
