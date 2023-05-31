@@ -6,44 +6,32 @@ import { useOptionCities } from '@/modules/master-data/regions/cities/utils';
 import { useOptionDistricts } from '@/modules/master-data/regions/districts/utils';
 import { useOptionProvinces } from '@/modules/master-data/regions/provinces/utils';
 import { useOptionSubDistricts } from '@/modules/master-data/regions/sub-districts/utils';
+import { useOptionRoles } from '@/modules/master-data/roles/utils';
 import { TUserForm } from '@/modules/master-data/users/entities';
 import { useFetchUserDetails, useUpdateUser } from '@/modules/master-data/users/hooks';
 import { successNotification, failedNotification } from '@/utils/helpers/alert';
 import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
+import { setRequired, setValidEmail } from '@/utils/helpers/validations';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
 
 export default ({ params }: TPageProps) => {
   const ID = params.id;
-
   const router = useRouter();
-
-  const { provinceOptions, provinceOptionDataHook } = useOptionProvinces();
-  const { cityOptions, cityOptionDataHook } = useOptionCities();
-  const { districtOptions, districtOptionDataHook } = useOptionDistricts();
-  const { subDistrictOptions, subDistrictOptionDataHook } = useOptionSubDistricts();
 
   const detailHook = useFetchUserDetails(ID, {
     onSuccess: (data) => {
       form.setFieldsValue({
-        fullname: data.fullname,
-        email: data.email,
+        ...data,
         password: '',
-        phoneNumber: data.phoneNumber,
-        provinceId: data.province.id,
-        cityId: data.city.id,
-        districtId: data.district.id,
-        subDistrictId: data.subDistrict.id,
-        postcode: data.postcode,
-        address: data.address,
-        roleId: data.role.id,
       });
     },
   });
   const updateMutation = useUpdateUser();
 
   const [form] = Form.useForm<TUserForm>();
+  const watchForm = Form.useWatch<TUserForm | undefined>([], form);
   const onFinish = (values: TUserForm) => {
     resetErrorForm(form);
 
@@ -65,6 +53,27 @@ export default ({ params }: TPageProps) => {
     );
   };
 
+  const { roleOptions, roleOptionDataHook } = useOptionRoles();
+  const { provinceOptions, provinceOptionDataHook } = useOptionProvinces();
+  const { cityOptions, cityOptionDataHook } = useOptionCities(
+    {
+      provinceId: watchForm?.provinceId,
+    },
+    { enabled: !!watchForm?.provinceId },
+  );
+  const { districtOptions, districtOptionDataHook } = useOptionDistricts(
+    {
+      cityId: watchForm?.cityId,
+    },
+    { enabled: !!watchForm?.cityId },
+  );
+  const { subDistrictOptions, subDistrictOptionDataHook } = useOptionSubDistricts(
+    {
+      districtId: watchForm?.districtId,
+    },
+    { enabled: !!watchForm?.districtId },
+  );
+
   return (
     <>
       <PageContainer
@@ -76,33 +85,32 @@ export default ({ params }: TPageProps) => {
           <Col span={24} lg={12}>
             <Card>
               <Form form={form} layout="vertical" onFinish={onFinish}>
-                <Form.Item name="fullname" label="Fullname" rules={[{ required: true }]}>
+                <Form.Item name="fullname" label="Fullname" rules={[setRequired]}>
                   <Input placeholder="Fullname" />
                 </Form.Item>
 
-                <Form.Item
-                  name="email"
-                  label="Email"
-                  rules={[
-                    { required: true },
-                    {
-                      type: 'email',
-                      message: 'The input is not valid E-mail!',
-                    },
-                  ]}
-                >
+                <Form.Item name="email" label="Email" rules={[setRequired, setValidEmail]}>
                   <Input type="email" placeholder="Email" />
                 </Form.Item>
 
-                <Form.Item name="password" label="Password" rules={[{ required: true }]}>
+                <Form.Item name="password" label="Password" rules={[setRequired]}>
                   <Input.Password placeholder="Password" />
                 </Form.Item>
 
-                <Form.Item name="phoneNumber" label="Phone Number" rules={[{ required: true }]}>
+                <Form.Item name="phoneNumber" label="Phone Number" rules={[setRequired]}>
                   <Input placeholder="Phone Number" />
                 </Form.Item>
 
-                <Form.Item name="provinceId" label="Province">
+                <Form.Item name="roleId" label="Role" rules={[setRequired]}>
+                  <OwnSearchSelect
+                    options={roleOptions.options}
+                    onSearch={roleOptions.setSearch}
+                    fetching={roleOptionDataHook.isFetching}
+                    placeholder="Role"
+                  />
+                </Form.Item>
+
+                <Form.Item name="provinceId" label="Province" rules={[setRequired]}>
                   <OwnSearchSelect
                     options={provinceOptions.options}
                     onSearch={provinceOptions.setSearch}
@@ -111,38 +119,41 @@ export default ({ params }: TPageProps) => {
                   />
                 </Form.Item>
 
-                <Form.Item name="cityId" label="City">
+                <Form.Item name="cityId" label="City" rules={[setRequired]}>
                   <OwnSearchSelect
                     options={cityOptions.options}
                     onSearch={cityOptions.setSearch}
                     fetching={cityOptionDataHook.isFetching}
                     placeholder="City"
+                    disabled={!watchForm?.provinceId}
                   />
                 </Form.Item>
 
-                <Form.Item name="provinceId" label="District">
+                <Form.Item name="districtId" label="District" rules={[setRequired]}>
                   <OwnSearchSelect
                     options={districtOptions.options}
                     onSearch={districtOptions.setSearch}
                     fetching={districtOptionDataHook.isFetching}
                     placeholder="District"
+                    disabled={!watchForm?.cityId}
                   />
                 </Form.Item>
 
-                <Form.Item name="subDistrictId" label="Sub District">
+                <Form.Item name="subDistrictId" label="Sub District" rules={[setRequired]}>
                   <OwnSearchSelect
                     options={subDistrictOptions.options}
                     onSearch={subDistrictOptions.setSearch}
                     fetching={subDistrictOptionDataHook.isFetching}
                     placeholder="Sub District"
+                    disabled={!watchForm?.districtId}
                   />
                 </Form.Item>
 
-                <Form.Item name="postcode" label="Post Code" rules={[{ required: true }]}>
+                <Form.Item name="postcode" label="Post Code" rules={[setRequired]}>
                   <Input placeholder="Post Code" />
                 </Form.Item>
 
-                <Form.Item name="address" label="Address" rules={[{ required: true }]}>
+                <Form.Item name="address" label="Address" rules={[setRequired]}>
                   <Input.TextArea placeholder="Address" />
                 </Form.Item>
 

@@ -25,8 +25,7 @@ export const authOptions: NextAuthOptions = {
           type: 'password',
         },
       },
-      async authorize(credentials, req) {
-        // const { username, password } = credentials;
+      async authorize(credentials) {
         const res = await axios
           .post(`${process.env.NEXT_PUBLIC_API_URL}/v1.0.0/auth/login`, {
             email: credentials?.email,
@@ -52,7 +51,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       return { ...token, ...user };
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       // Send properties to the client, like an access_token from a provider.
       session.user = token;
 

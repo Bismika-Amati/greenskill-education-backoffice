@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { useFetchProvinces } from './hooks';
 import { SelectProps } from 'antd';
-import { TProvincesParams } from './entities';
+import { TProvinceResponse, TProvincesParams } from './entities';
+import { TPaginateResponse, TResponseError } from '@/modules/commons/entities';
+import { UseQueryOptions } from '@tanstack/react-query';
 
-export const useOptionProvinces = (params?: TProvincesParams) => {
+export const useOptionProvinces = (
+  params?: TProvincesParams,
+  config?: UseQueryOptions<TPaginateResponse<TProvinceResponse>, TResponseError>,
+) => {
   const [search, setSearch] = useState(params?.search ?? '');
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
@@ -18,6 +23,7 @@ export const useOptionProvinces = (params?: TProvincesParams) => {
           })),
         );
       },
+      ...config,
     },
   );
 

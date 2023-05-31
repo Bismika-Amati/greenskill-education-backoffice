@@ -6,6 +6,7 @@ import { TRoleForm } from '@/modules/master-data/roles/entities';
 import { useFetchRoleDetails, useUpdateRole } from '@/modules/master-data/roles/hooks';
 import { failedNotification, successNotification } from '@/utils/helpers/alert';
 import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
+import { setRequired } from '@/utils/helpers/validations';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
@@ -56,7 +57,7 @@ export default ({ params }: TPageProps) => {
           <Col span={24} lg={12}>
             <Card>
               <Form form={form} layout="vertical" onFinish={onFinish}>
-                <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+                <Form.Item name="name" label="Name" rules={[setRequired]}>
                   <Input placeholder="Name" />
                 </Form.Item>
 

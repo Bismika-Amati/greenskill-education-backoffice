@@ -7,6 +7,7 @@ import { useFetchCityDetails, useUpdateCity } from '@/modules/master-data/region
 import { useOptionProvinces } from '@/modules/master-data/regions/provinces/utils';
 import { failedNotification, successNotification } from '@/utils/helpers/alert';
 import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
+import { setRequired } from '@/utils/helpers/validations';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
@@ -60,11 +61,11 @@ export default ({ params }: TPageProps) => {
           <Col span={24} lg={12}>
             <Card>
               <Form form={form} layout="vertical" onFinish={onFinish}>
-                <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+                <Form.Item name="name" label="Name" rules={[setRequired]}>
                   <Input placeholder="name" />
                 </Form.Item>
 
-                <Form.Item name="provinceId" label="Province" rules={[{ required: true }]}>
+                <Form.Item name="provinceId" label="Province" rules={[setRequired]}>
                   <OwnSearchSelect
                     options={provinceOptions.options}
                     onSearch={provinceOptions.setSearch}

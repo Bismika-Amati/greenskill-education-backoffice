@@ -1,7 +1,6 @@
 'use client';
+
 import { Button, Input } from 'antd';
-// import Button from '@elements/Button';
-// import TextBox from '@elements/TextBox';
 import { signIn } from 'next-auth/react';
 import { useRef } from 'react';
 
@@ -14,7 +13,7 @@ const LoginPage = ({ searchParams }: IProps) => {
   const pass = useRef('');
 
   const onSubmit = async () => {
-    const result = await signIn('credentials', {
+    await signIn('credentials', {
       email: userName.current,
       password: pass.current,
       redirect: true,

@@ -32,8 +32,16 @@ export default () => {
 
   const columns: ColumnsType<TUserResponse> = [
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: 'Fullname',
+      dataIndex: 'fullname',
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+    },
+    {
+      title: 'Phone Number',
+      dataIndex: 'phoneNumber',
     },
     {
       title: 'Action',

@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { useFetchDistricts } from './hooks';
 import { SelectProps } from 'antd';
-import { TDistrictsParams } from './entities';
+import { TDistrictResponse, TDistrictsParams } from './entities';
+import { TPaginateResponse, TResponseError } from '@/modules/commons/entities';
+import { UseQueryOptions } from '@tanstack/react-query';
 
-export const useOptionDistricts = (params?: TDistrictsParams) => {
+export const useOptionDistricts = (
+  params?: TDistrictsParams,
+  config?: UseQueryOptions<TPaginateResponse<TDistrictResponse>, TResponseError>,
+) => {
   const [search, setSearch] = useState(params?.search ?? '');
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
@@ -18,6 +23,7 @@ export const useOptionDistricts = (params?: TDistrictsParams) => {
           })),
         );
       },
+      ...config,
     },
   );
 

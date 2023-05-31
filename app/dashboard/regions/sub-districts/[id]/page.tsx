@@ -10,6 +10,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
 import { TPageProps } from '@/modules/commons/entities';
+import { setRequired } from '@/utils/helpers/validations';
 
 export default ({ params }: TPageProps) => {
   const ID = params.id;
@@ -52,11 +53,11 @@ export default ({ params }: TPageProps) => {
           <Col span={24} lg={12}>
             <Card>
               <Form form={form} layout="vertical" onFinish={onFinish}>
-                <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+                <Form.Item name="name" label="Name" rules={[setRequired]}>
                   <Input placeholder="Name" />
                 </Form.Item>
 
-                <Form.Item name="districtId" label="District" rules={[{ required: true }]}>
+                <Form.Item name="districtId" label="District" rules={[setRequired]}>
                   <OwnSearchSelect
                     options={districtOptions.options}
                     onSearch={districtOptions.setSearch}

@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { useFetchRoles } from './hooks';
 import { SelectProps } from 'antd';
+import { TRoleResponse, TRolesParams } from './entities';
+import { TPaginateResponse, TResponseError } from '@/modules/commons/entities';
+import { UseQueryOptions } from '@tanstack/react-query';
 
-export const useOptionRoles = () => {
-  const [search, setSearch] = useState('');
+export const useOptionRoles = (
+  params?: TRolesParams,
+  config?: UseQueryOptions<TPaginateResponse<TRoleResponse>, TResponseError>,
+) => {
+  const [search, setSearch] = useState(params?.search ?? '');
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
   const roleDataHook = useFetchRoles(
-    { search },
+    { ...params, search },
     {
       onSuccess: (data) => {
         setOptions(
@@ -17,6 +23,7 @@ export const useOptionRoles = () => {
           })),
         );
       },
+      ...config,
     },
   );
 

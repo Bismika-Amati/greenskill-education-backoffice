@@ -38,6 +38,7 @@ export type TUserForm = {
   subDistrictId: string;
   postcode: string;
   address: string;
+  photo: string;
 };
 
 export type TUpdateUserParams = {
