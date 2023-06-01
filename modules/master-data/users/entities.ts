@@ -24,7 +24,10 @@ export type TUserResponse = {
   deletedAt: string;
 };
 
-export type TUsersParams = TPaginateParams;
+export type TUsersParams = TPaginateParams & {
+  roleId?: string;
+  role?: string;
+};
 
 export type TUserForm = {
   fullname: string;
