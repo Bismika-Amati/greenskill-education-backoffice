@@ -96,18 +96,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </Sider>
       <Layout className="site-layout">
         <Header style={{ padding: 0, background: colorBgContainer, position: 'sticky' }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
-          />
+          <div
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 1rem 0 0' }}
+          >
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              style={{
+                fontSize: '16px',
+                width: 64,
+                height: 64,
+              }}
+            />
 
-          <Button onClick={signOut}>Logout</Button>
+            <Button onClick={signOut}>Logout</Button>
+          </div>
         </Header>
 
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>{children}</Content>

@@ -14,7 +14,7 @@ export const useFetchEarlyAdopters = (
   options?: UseQueryOptions<TPaginateResponse<TEarlyAdopterResponse>, TResponseError>,
 ): UseQueryResult<TPaginateResponse<TEarlyAdopterResponse>, TResponseError> => {
   return useQuery({
-    queryKey: ['fetch-masterdata-earlyadopterss', params],
+    queryKey: ['fetch-masterdata-earlyadopters', params],
     queryFn: () => fetchEarlyAdopters(params),
     ...options,
   });
@@ -25,7 +25,7 @@ export const useFetchEarlyAdopterDetails = (
   options?: UseQueryOptions<TEarlyAdopterResponse, TResponseError>,
 ): UseQueryResult<TEarlyAdopterResponse> => {
   return useQuery({
-    queryKey: ['fetch-masterdata-earlyadopters-details', id],
+    queryKey: ['fetch-masterdata-earlyadopter-details', id],
     queryFn: () => fetchEarlyAdopterDetails(id),
     enabled: !!id,
     ...options,
