@@ -2,8 +2,8 @@
 
 import { OwnTable, useOwnPaginaiton } from '@/components/organisms';
 import { TProblemStatementResponse } from '@/modules/master-data/problem-statements/entities';
-import { useDeleteProblemStatement, useFetchProblemStatements } from '@/modules/master-data/problem-statements/hooks';
-import { failedNotification, successNotification } from '@/utils/helpers/alert';
+import { useFetchProblemStatements } from '@/modules/master-data/problem-statements/hooks';
+import { useProblemStatementForm } from '@/modules/master-data/problem-statements/utils';
 import { showDeleteConfirm } from '@/utils/helpers/modal';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
@@ -17,18 +17,7 @@ export default () => {
     ...paginateParams,
   });
 
-  const deleteMutation = useDeleteProblemStatement();
-  const onDelete = (id: TProblemStatementResponse['id']) => {
-    deleteMutation.mutate(id, {
-      onSuccess: () => {
-        dataHook.refetch();
-        successNotification();
-      },
-      onError: () => {
-        failedNotification();
-      },
-    });
-  };
+  const { onDelete } = useProblemStatementForm();
 
   const columns: ColumnsType<TProblemStatementResponse> = [
     {
@@ -53,11 +42,14 @@ export default () => {
             danger
             size="small"
             type="link"
-            onClick={() =>
+            onClick={() => {
               showDeleteConfirm({
-                onOk: () => onDelete(record.id),
-              })
-            }
+                onOk: () =>
+                  onDelete(record.id).then(() => {
+                    dataHook.refetch();
+                  }),
+              });
+            }}
           />
         </Space>
       ),

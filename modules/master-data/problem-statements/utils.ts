@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { useCreateProblemStatement, useFetchProblemStatements, useUpdateProblemStatement } from './hooks';
+import {
+  useCreateProblemStatement,
+  useDeleteProblemStatement,
+  useFetchProblemStatements,
+  useUpdateProblemStatement,
+} from './hooks';
 import { Form, SelectProps } from 'antd';
 import { TProblemStatementForm, TProblemStatementResponse, TProblemStatementsParams } from './entities';
 import { TPageProps, TPaginateResponse, TResponseError } from '@/modules/commons/entities';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
 import { failedNotification, successNotification } from '@/utils/helpers/alert';
-import { useRouter } from 'next/navigation';
 
 export const useOptionProblemStatements = (
   params?: TProblemStatementsParams,
@@ -42,7 +46,6 @@ export const useOptionProblemStatements = (
 
 export const useProblemStatementForm = (id?: TPageProps['params']['id']) => {
   const ID = id ?? '';
-  const router = useRouter();
 
   const [form] = Form.useForm<TProblemStatementForm>();
 
@@ -50,15 +53,18 @@ export const useProblemStatementForm = (id?: TPageProps['params']['id']) => {
   const onCreate = (values: TProblemStatementForm) => {
     resetErrorForm(form);
 
-    createMutation.mutate(values, {
-      onSuccess: (data) => {
-        router.push(`/dashboard/problem-statements/${data.id}`);
-        successNotification();
-      },
-      onError: (data) => {
-        failedNotification();
-        setErrorForm(form, data.message);
-      },
+    return new Promise<TProblemStatementResponse>((resolve, reject) => {
+      createMutation.mutate(values, {
+        onSuccess: (data) => {
+          successNotification();
+          resolve(data);
+        },
+        onError: (data) => {
+          failedNotification();
+          setErrorForm(form, data.message);
+          reject(data);
+        },
+      });
     });
   };
 
@@ -66,23 +72,44 @@ export const useProblemStatementForm = (id?: TPageProps['params']['id']) => {
   const onUpdate = (values: TProblemStatementForm) => {
     resetErrorForm(form);
 
-    updateMutation.mutate(
-      { id: ID, data: values },
-      {
-        onSuccess: () => {
+    return new Promise<TProblemStatementResponse>((resolve, reject) => {
+      updateMutation.mutate(
+        { id: ID, data: values },
+        {
+          onSuccess: (data) => {
+            successNotification();
+            resolve(data);
+          },
+          onError: (data) => {
+            failedNotification();
+            setErrorForm(form, data.message);
+            reject(data);
+          },
+        },
+      );
+    });
+  };
+
+  const deleteMutation = useDeleteProblemStatement();
+  const onDelete = (id: TProblemStatementResponse['id']) => {
+    return new Promise((resolve, reject) => {
+      deleteMutation.mutate(id, {
+        onSuccess: (data) => {
           successNotification();
+          resolve(data);
         },
         onError: (data) => {
           failedNotification();
-          setErrorForm(form, data.message);
+          reject(data);
         },
-      },
-    );
+      });
+    });
   };
 
   return {
     form,
     onCreate,
     onUpdate,
+    onDelete,
   };
 };

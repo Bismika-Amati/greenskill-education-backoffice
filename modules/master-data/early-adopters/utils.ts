@@ -1,26 +1,21 @@
 import { useState } from 'react';
-import {
-  useCreateCustomerSegment,
-  useDeleteCustomerSegment,
-  useFetchCustomerSegments,
-  useUpdateCustomerSegment,
-} from './hooks';
+import { useCreateEarlyAdopter, useDeleteEarlyAdopter, useFetchEarlyAdopters, useUpdateEarlyAdopter } from './hooks';
 import { Form, SelectProps } from 'antd';
-import { TCustomerSegmentForm, TCustomerSegmentResponse, TCustomerSegmentsParams } from './entities';
+import { TEarlyAdopterForm, TEarlyAdopterResponse, TEarlyAdoptersParams } from './entities';
 import { TPageProps, TPaginateResponse, TResponseError } from '@/modules/commons/entities';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
 import { failedNotification, successNotification } from '@/utils/helpers/alert';
 import { TProblemStatementResponse } from '../problem-statements/entities';
 
-export const useOptionCustomerSegments = (
-  params?: TCustomerSegmentsParams,
-  config?: UseQueryOptions<TPaginateResponse<TCustomerSegmentResponse>, TResponseError>,
+export const useOptionEarlyAdopters = (
+  params?: TEarlyAdoptersParams,
+  config?: UseQueryOptions<TPaginateResponse<TEarlyAdopterResponse>, TResponseError>,
 ) => {
   const [search, setSearch] = useState(params?.search ?? '');
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
-  const customerSegementDataHook = useFetchCustomerSegments(
+  const earlyAdopterDataHook = useFetchEarlyAdopters(
     { ...params, search },
     {
       onSuccess: (data) => {
@@ -36,25 +31,25 @@ export const useOptionCustomerSegments = (
   );
 
   return {
-    customerSegementOptions: {
+    earlyAdopterOptions: {
       options,
       search,
       setSearch,
     },
-    customerSegementOptionDataHook: customerSegementDataHook,
+    earlyAdopterOptionDataHook: earlyAdopterDataHook,
   };
 };
 
-export const useCustomerSegmentForm = (id?: TPageProps['params']['id']) => {
+export const useEarlyAdopterForm = (id?: TPageProps['params']['id']) => {
   const ID = id ?? '';
 
-  const [form] = Form.useForm<TCustomerSegmentForm>();
+  const [form] = Form.useForm<TEarlyAdopterForm>();
 
-  const createMutation = useCreateCustomerSegment();
-  const onCreate = (values: TCustomerSegmentForm) => {
+  const createMutation = useCreateEarlyAdopter();
+  const onCreate = (values: TEarlyAdopterForm) => {
     resetErrorForm(form);
 
-    return new Promise<TCustomerSegmentResponse>((resolve, reject) => {
+    return new Promise<TEarlyAdopterResponse>((resolve, reject) => {
       createMutation.mutate(values, {
         onSuccess: (data) => {
           successNotification();
@@ -69,11 +64,11 @@ export const useCustomerSegmentForm = (id?: TPageProps['params']['id']) => {
     });
   };
 
-  const updateMutation = useUpdateCustomerSegment();
-  const onUpdate = (values: TCustomerSegmentForm) => {
+  const updateMutation = useUpdateEarlyAdopter();
+  const onUpdate = (values: TEarlyAdopterForm) => {
     resetErrorForm(form);
 
-    return new Promise<TCustomerSegmentResponse>((resolve, reject) => {
+    return new Promise<TEarlyAdopterResponse>((resolve, reject) => {
       updateMutation.mutate(
         { id: ID, data: values },
         {
@@ -91,7 +86,7 @@ export const useCustomerSegmentForm = (id?: TPageProps['params']['id']) => {
     });
   };
 
-  const deleteMutation = useDeleteCustomerSegment();
+  const deleteMutation = useDeleteEarlyAdopter();
   const onDelete = (id: TProblemStatementResponse['id']) => {
     return new Promise((resolve, reject) => {
       deleteMutation.mutate(id, {
