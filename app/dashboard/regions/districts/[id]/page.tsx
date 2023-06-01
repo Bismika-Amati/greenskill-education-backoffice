@@ -12,7 +12,8 @@ import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
 import { setRequired } from '@/utils/helpers/validations';
 
-export default ({ params }: TPageProps) => {
+export default (props: TPageProps) => {
+  const { params } = props;
   const ID = params.id;
 
   const router = useRouter();
@@ -32,10 +33,7 @@ export default ({ params }: TPageProps) => {
   const onFinish = (values: TDistrictForm) => {
     resetErrorForm(form);
     updateMutation.mutate(
-      {
-        id: ID,
-        data: values,
-      },
+      { id: ID, data: values },
       {
         onSuccess: () => {
           router.push('/dashboard/regions/districts');

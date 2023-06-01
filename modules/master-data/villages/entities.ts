@@ -1,8 +1,12 @@
+import { TPaginateParams } from '@/modules/commons/entities';
+
 export type TVillageResponse = {
   id: string;
   name: string;
   description: string;
 };
+
+export type TVillagesParams = TPaginateParams;
 
 export type TVillageForm = {
   name: string;

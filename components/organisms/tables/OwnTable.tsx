@@ -38,13 +38,13 @@ export const OwnTable = <T extends { id: string }>(props: OwnTableProps<T>): JSX
 
 const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 
-export const useOwnPaginaiton = () => {
+export const useOwnPaginaiton = (defaultPerPage?: number) => {
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(PAGE_SIZE_OPTIONS[0]);
+  const [perPage, setPerPage] = useState(defaultPerPage || PAGE_SIZE_OPTIONS[0]);
 
   const onChangePaginateParams = (pagination: TablePaginationConfig) => {
     setPage(pagination.current || 1);
-    setPerPage(pagination.pageSize || PAGE_SIZE_OPTIONS[0]);
+    setPerPage(pagination.pageSize || defaultPerPage || PAGE_SIZE_OPTIONS[0]);
   };
 
   return {

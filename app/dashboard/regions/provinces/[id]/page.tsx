@@ -11,7 +11,8 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
 
-export default ({ params }: TPageProps) => {
+export default (props: TPageProps) => {
+  const { params } = props;
   const ID = params.id;
 
   const router = useRouter();
@@ -29,10 +30,7 @@ export default ({ params }: TPageProps) => {
   const onFinish = (values: TProvinceForm) => {
     resetErrorForm(form);
     updateMutation.mutate(
-      {
-        id: ID,
-        data: values,
-      },
+      { id: ID, data: values },
       {
         onSuccess: () => {
           router.push('/dashboard/regions/provinces');

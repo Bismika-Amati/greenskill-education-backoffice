@@ -19,7 +19,7 @@ export const useFetchVillageDetails = (
   options?: UseQueryOptions<TVillageResponse, TResponseError>,
 ): UseQueryResult<TVillageResponse> => {
   return useQuery({
-    queryKey: ['fetch-masterdata-city-details', id],
+    queryKey: ['fetch-masterdata-village-details', id],
     queryFn: () => fetchVillageDetails(id),
     enabled: !!id,
     ...options,

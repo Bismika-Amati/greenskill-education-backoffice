@@ -8,6 +8,7 @@ import {
   GlobalOutlined,
   KeyOutlined,
   UserOutlined,
+  PaperClipOutlined,
 } from '@ant-design/icons';
 import { Layout, theme, Menu, Typography, Button } from 'antd';
 import { MenuItemType } from 'antd/es/menu/hooks/useItems';
@@ -34,6 +35,7 @@ function getItem(
 const menus: MenuItemType[] = [
   getItem('Dashboard', '/dashboard', <PieChartOutlined />),
   getItem('Village', '/dashboard/villages', <HomeOutlined />),
+  getItem('Problem Statement', '/dashboard/problem-statements', <PaperClipOutlined />),
   getItem('Region', '/dashboard/regions', <GlobalOutlined />, [
     getItem('Province', '/dashboard/regions/provinces'),
     getItem('City', '/dashboard/regions/cities'),

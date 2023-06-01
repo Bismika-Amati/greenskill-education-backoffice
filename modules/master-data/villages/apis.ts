@@ -1,11 +1,9 @@
 import { versionApi } from '@/modules/commons/constants';
-import { TPaginateParams, TPaginateResponse, TResponseData } from '@/modules/commons/entities';
-import { TVillageResponse, TVillageForm, TUpdateVillageParams } from './entities';
+import { TPaginateResponse, TResponseData } from '@/modules/commons/entities';
+import { TVillageResponse, TVillageForm, TUpdateVillageParams, TVillagesParams } from './entities';
 import axios from '@/utils/axios';
 
-export const fetchVillages = async (
-  params: TPaginateParams & { provinceId?: string },
-): Promise<TPaginateResponse<TVillageResponse>> => {
+export const fetchVillages = async (params: TVillagesParams): Promise<TPaginateResponse<TVillageResponse>> => {
   const result = await axios.get<TPaginateResponse<TVillageResponse>>(`${versionApi.VERSION_V1}/master-data/villages`, {
     params,
   });
