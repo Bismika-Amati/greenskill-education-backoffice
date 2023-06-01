@@ -48,6 +48,7 @@ export const useInterviewRecapForm = (id?: TPageProps['params']['id']) => {
   const ID = id ?? '';
 
   const [form] = Form.useForm<TInterviewRecapForm>();
+  const watchForm = Form.useWatch<TInterviewRecapForm | undefined>([], form);
 
   const createMutation = useCreateInterviewRecap();
   const onCreate = (values: TInterviewRecapForm) => {
@@ -108,6 +109,7 @@ export const useInterviewRecapForm = (id?: TPageProps['params']['id']) => {
 
   return {
     form,
+    watchForm,
     onCreate,
     onUpdate,
     onDelete,
