@@ -14,7 +14,7 @@ export const useFetchProblemStatements = (
   options?: UseQueryOptions<TPaginateResponse<TProblemStatementResponse>, TResponseError>,
 ): UseQueryResult<TPaginateResponse<TProblemStatementResponse>, TResponseError> => {
   return useQuery({
-    queryKey: ['fetch-masterdata-problemstatement', params],
+    queryKey: ['fetch-masterdata-problemstatements', params],
     queryFn: () => fetchProblemStatements(params),
     ...options,
   });
