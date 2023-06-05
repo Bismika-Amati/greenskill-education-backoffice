@@ -19,9 +19,15 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
   const { params } = props;
 
   const { paginateParams, onChangePaginateParams } = useOwnPaginaiton();
-  const dataHook = useFetchExistingAlternatives({
-    ...paginateParams,
-  });
+  const dataHook = useFetchExistingAlternatives(
+    {
+      ...paginateParams,
+      problemStatementId: params.id,
+    },
+    {
+      enabled: !!params.id,
+    },
+  );
 
   const [activedId, setActivedId] = useState('');
   const drawer = useOwnDrawer();

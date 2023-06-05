@@ -1,4 +1,4 @@
-import { TPaginateParams, TPaginateResponse, TResponseError } from '@/modules/commons/entities';
+import { TPaginateResponse, TResponseError } from '@/modules/commons/entities';
 import { UseMutationResult, UseQueryOptions, UseQueryResult, useMutation, useQuery } from '@tanstack/react-query';
 import {
   createExistingAlternative,
@@ -7,10 +7,15 @@ import {
   fetchExistingAlternativeDetails,
   updateExistingAlternative,
 } from './apis';
-import { TExistingAlternativeForm, TExistingAlternativeResponse, TUpdateExistingAlternativeParams } from './entities';
+import {
+  TExistingAlternativeForm,
+  TExistingAlternativeResponse,
+  TExistingAlternativesParams,
+  TUpdateExistingAlternativeParams,
+} from './entities';
 
 export const useFetchExistingAlternatives = (
-  params: TPaginateParams,
+  params: TExistingAlternativesParams,
   options?: UseQueryOptions<TPaginateResponse<TExistingAlternativeResponse>, TResponseError>,
 ): UseQueryResult<TPaginateResponse<TExistingAlternativeResponse>, TResponseError> => {
   return useQuery({
