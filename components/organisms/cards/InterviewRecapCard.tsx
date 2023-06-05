@@ -10,6 +10,8 @@ import { ColumnsType } from 'antd/es/table';
 import { getSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useOwnPaginaiton, OwnTable } from '../tables';
+import { setDefaultFormatDate } from '@/utils/helpers/date';
+import dayjs from 'dayjs';
 
 type InterviewRecapCardProps = TPageProps;
 
@@ -28,6 +30,7 @@ export const InterviewRecapCard: React.FC<InterviewRecapCardProps> = (props) => 
   const onFinish = (values: TInterviewRecapForm) => {
     console.log(values);
     values.problemStatementId = params.id;
+    values.interviewDate = new Date(values.interviewDate);
 
     const onForm = activedId ? onUpdate(values) : onCreate(values);
     onForm.then(() => {
@@ -44,7 +47,10 @@ export const InterviewRecapCard: React.FC<InterviewRecapCardProps> = (props) => 
   const onEdit = (data: TInterviewRecapResponse) => {
     setActivedId(data.id);
     drawer.onTrigger();
-    form.setFieldsValue(data);
+    form.setFieldsValue({
+      ...data,
+      interviewDate: dayjs(data.interviewDate),
+    });
   };
 
   const onRemove = (data: TInterviewRecapResponse) => {
@@ -59,8 +65,8 @@ export const InterviewRecapCard: React.FC<InterviewRecapCardProps> = (props) => 
 
   const columns: ColumnsType<TInterviewRecapResponse> = [
     {
-      title: 'Title',
-      dataIndex: 'title',
+      title: 'Name',
+      dataIndex: 'intervieweeName',
     },
     {
       title: 'Action',
@@ -109,14 +115,8 @@ export const InterviewRecapCard: React.FC<InterviewRecapCardProps> = (props) => 
           </Form.Item>
 
           <Form.Item name="interviewDate" label="Interview Date" rules={[setRequired]}>
-            <DatePicker
-              placeholder="Interview Date"
-              style={{ width: '100%' }}
-              onChange={(value, dateString) => {
-                console.log(dateString);
-                // form.setFieldValue('interviewDate', dateString);
-              }}
-            />
+            {JSON.stringify(watchForm)}
+            {/* <DatePicker placeholder="Interview Date" style={{ width: '100%' }} /> */}
           </Form.Item>
 
           <Form.Item label="Problems">

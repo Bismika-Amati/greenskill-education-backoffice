@@ -7,7 +7,7 @@ import { useProblemStatementForm } from '@/modules/master-data/problem-statement
 import { showDeleteConfirm } from '@/utils/helpers/modal';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
-import { Button, Space } from 'antd';
+import { Button, Space, Typography } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import Link from 'next/link';
 
@@ -27,6 +27,7 @@ export default () => {
     {
       title: 'Village',
       dataIndex: 'villageId',
+      render: (_, record) => <Typography.Text>{record.village.name}</Typography.Text>,
     },
     {
       title: 'Action',

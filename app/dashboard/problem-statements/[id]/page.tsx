@@ -75,17 +75,13 @@ export default (props: TPageProps) => {
             </Card>
           </Col>
 
-          <Col span={24} lg={12}>
+          {/* <Col span={24} lg={12}>
             <CustomerSegmentCard params={params} />
           </Col>
 
           <Col span={24} lg={12}>
             <EarlyAdopterCard params={params} />
-          </Col>
-
-          <Col span={24}>
-            <InterviewRecapCard params={params} />
-          </Col>
+          </Col> */}
 
           <Col span={24}>
             <ExistingAlternativeCard params={params} />

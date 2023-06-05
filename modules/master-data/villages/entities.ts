@@ -1,9 +1,20 @@
 import { TPaginateParams } from '@/modules/commons/entities';
 
 export type TVillageResponse = {
-  id: string;
-  name: string;
+  address: string;
+  cityId: string;
+  createdAt: string;
+  deletedAt: string;
   description: string;
+  districtId: string;
+  id: string;
+  latlong: string;
+  name: string;
+  picId: string;
+  postcode: string;
+  provinceId: string;
+  subDistrictId: string;
+  updatedAt: string;
 };
 
 export type TVillagesParams = TPaginateParams;

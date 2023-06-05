@@ -16,7 +16,7 @@ export type TInterviewRecapsParams = TPaginateParams & {
 
 export type TInterviewRecapForm = {
   intervieweeName: string;
-  interviewDate: string;
+  interviewDate: Date;
   evidenceVideo: string;
   evidenceText: string;
   problemStatementId: string;

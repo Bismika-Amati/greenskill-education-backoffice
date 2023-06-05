@@ -1,16 +1,26 @@
 'use client';
 
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
+import { TProblemStatementForm } from '@/modules/master-data/problem-statements/entities';
 import { useProblemStatementForm } from '@/modules/master-data/problem-statements/utils';
 import { useOptionVillages } from '@/modules/master-data/villages/utils';
 import { setRequired } from '@/utils/helpers/validations';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
+import { useRouter } from 'next/navigation';
 
 export default () => {
-  const problemStatementForm = useProblemStatementForm();
+  const router = useRouter();
+
+  const { form, onCreate } = useProblemStatementForm();
 
   const { villageOptions, villageOptionDataHook } = useOptionVillages();
+
+  const onStore = (values: TProblemStatementForm) => {
+    onCreate(values).then((data) => {
+      router.push(`/dashboard/problem-statements/${data.id}`);
+    });
+  };
 
   return (
     <>
@@ -22,7 +32,7 @@ export default () => {
         <OwnRow>
           <Col span={24} lg={12}>
             <Card>
-              <Form form={problemStatementForm.form} layout="vertical" onFinish={problemStatementForm.onCreate}>
+              <Form form={form} layout="vertical" onFinish={onStore}>
                 <Form.Item name="topic" label="Topic" rules={[setRequired]}>
                   <Input placeholder="Topic" />
                 </Form.Item>
