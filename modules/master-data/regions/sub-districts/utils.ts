@@ -13,7 +13,7 @@ export const useOptionSubDistricts = (
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
   const subDistrictDataHook = useFetchSubDistricts(
-    { ...params, search },
+    { ...params, search: search || params?.search },
     {
       onSuccess: (data) => {
         setOptions(

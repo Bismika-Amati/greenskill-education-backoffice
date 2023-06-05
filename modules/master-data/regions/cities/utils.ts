@@ -13,7 +13,7 @@ export const useOptionCities = (
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
   const cityDataHook = useFetchCities(
-    { ...params, search },
+    { ...params, search: search || params?.search },
     {
       onSuccess: (data) => {
         setOptions(

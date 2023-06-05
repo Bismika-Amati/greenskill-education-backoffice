@@ -13,7 +13,7 @@ export const useOptionProvinces = (
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
   const provinceDataHook = useFetchProvinces(
-    { ...params, search },
+    { ...params, search: search || params?.search },
     {
       onSuccess: (data) => {
         setOptions(

@@ -16,16 +16,25 @@ import { setRequired } from '@/utils/helpers/validations';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default (props: TPageProps) => {
   const { params } = props;
   const ID = params.id;
   const router = useRouter();
 
+  const [region, setRegion] = useState({ province: '', city: '', district: '', subDistrict: '' });
+
   const detailHook = useFetchVillageDetails(ID, {
     onSuccess: (data) => {
       form.setFieldsValue({
         ...data,
+      });
+      setRegion({
+        province: data.province.name,
+        city: data.city.name,
+        district: data.city.name,
+        subDistrict: data.subDistrict.name,
       });
     },
   });
@@ -52,24 +61,32 @@ export default (props: TPageProps) => {
     );
   };
 
-  const { provinceOptions, provinceOptionDataHook } = useOptionProvinces();
+  const { provinceOptions, provinceOptionDataHook } = useOptionProvinces(
+    {
+      search: region.province,
+    },
+    { enabled: !!detailHook.data?.province.name },
+  );
   const { cityOptions, cityOptionDataHook } = useOptionCities(
     {
       provinceId: watchForm?.provinceId,
+      search: detailHook.data?.city.name,
     },
-    { enabled: !!watchForm?.provinceId },
+    { enabled: !!watchForm?.provinceId && !!detailHook.data?.city.name },
   );
   const { districtOptions, districtOptionDataHook } = useOptionDistricts(
     {
       cityId: watchForm?.cityId,
+      search: detailHook.data?.district.name,
     },
-    { enabled: !!watchForm?.cityId },
+    { enabled: !!watchForm?.cityId && !!detailHook.data?.city.name },
   );
   const { subDistrictOptions, subDistrictOptionDataHook } = useOptionSubDistricts(
     {
       districtId: watchForm?.districtId,
+      search: detailHook.data?.subDistrict.name,
     },
-    { enabled: !!watchForm?.districtId },
+    { enabled: !!watchForm?.districtId && !!detailHook.data?.subDistrict.name },
   );
   const { userOptions, userOptionDataHook } = useOptionUsers({
     role: DEFAULT_ROLES.PicVillage,
