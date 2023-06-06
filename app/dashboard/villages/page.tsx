@@ -2,8 +2,8 @@
 
 import { OwnTable, useOwnPaginaiton } from '@/components/organisms';
 import { TVillageResponse } from '@/modules/master-data/villages/entities';
-import { useDeleteVillage, useFetchVillages } from '@/modules/master-data/villages/hooks';
-import { failedNotification, successNotification } from '@/utils/helpers/alert';
+import { useFetchVillages } from '@/modules/master-data/villages/hooks';
+import { useVillageForm } from '@/modules/master-data/villages/utils';
 import { showDeleteConfirm } from '@/utils/helpers/modal';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
@@ -17,18 +17,7 @@ export default () => {
     ...paginateParams,
   });
 
-  const deleteMutation = useDeleteVillage();
-  const onDelete = (id: TVillageResponse['id']) => {
-    deleteMutation.mutate(id, {
-      onSuccess: () => {
-        dataHook.refetch();
-        successNotification();
-      },
-      onError: () => {
-        failedNotification();
-      },
-    });
-  };
+  const { onDelete } = useVillageForm();
 
   const columns: ColumnsType<TVillageResponse> = [
     {

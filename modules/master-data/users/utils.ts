@@ -13,7 +13,7 @@ export const useOptionUsers = (
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
   const userDataHook = useFetchUsers(
-    { ...params, search },
+    { ...params, search: search || params?.search },
     {
       onSuccess: (data) => {
         setOptions(

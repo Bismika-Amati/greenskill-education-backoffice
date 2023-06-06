@@ -8,9 +8,8 @@ import { useOptionSubDistricts } from '@/modules/master-data/regions/sub-distric
 import { DEFAULT_ROLES } from '@/modules/master-data/roles/enums';
 import { useOptionUsers } from '@/modules/master-data/users/utils';
 import { TVillageForm } from '@/modules/master-data/villages/entities';
-import { useCreateVillage } from '@/modules/master-data/villages/hooks';
-import { successNotification, failedNotification } from '@/utils/helpers/alert';
-import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
+import { useVillageForm } from '@/modules/master-data/villages/utils';
+import { resetErrorForm } from '@/utils/helpers/form';
 import { setRequired } from '@/utils/helpers/validations';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
@@ -19,23 +18,14 @@ import { useRouter } from 'next/navigation';
 export default () => {
   const router = useRouter();
 
-  const createMutation = useCreateVillage();
+  const { form, watchForm, onCreate } = useVillageForm();
 
-  const [form] = Form.useForm<TVillageForm>();
-  const watchForm = Form.useWatch<TVillageForm | undefined>([], form);
   const onFinish = (values: TVillageForm) => {
     resetErrorForm(form);
 
-    values.latlong = '1234,1234';
-    createMutation.mutate(values, {
-      onSuccess: () => {
-        router.push('/dashboard/villages');
-        successNotification();
-      },
-      onError: (data) => {
-        failedNotification();
-        setErrorForm(form, data.message);
-      },
+    values.latlong = '';
+    onCreate(values).then((data) => {
+      router.push(`/dashboard/villages/${data.id}`);
     });
   };
 

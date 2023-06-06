@@ -1,32 +1,31 @@
 import { useState } from 'react';
 import {
-  useCreateCustomerSegment,
-  useDeleteCustomerSegment,
-  useFetchCustomerSegments,
-  useUpdateCustomerSegment,
+  useCreateVillagePicture,
+  useDeleteVillagePicture,
+  useFetchVillagePictures,
+  useUpdateVillagePicture,
 } from './hooks';
 import { Form, SelectProps } from 'antd';
-import { TCustomerSegmentForm, TCustomerSegmentResponse, TCustomerSegmentsParams } from './entities';
+import { TVillagePictureForm, TVillagePictureResponse, TVillagePicturesParams } from './entities';
 import { TPageProps, TPaginateResponse, TResponseError } from '@/modules/commons/entities';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
 import { failedNotification, successNotification } from '@/utils/helpers/alert';
-import { TProblemStatementResponse } from '../problem-statements/entities';
 
-export const useOptionCustomerSegments = (
-  params?: TCustomerSegmentsParams,
-  config?: UseQueryOptions<TPaginateResponse<TCustomerSegmentResponse>, TResponseError>,
+export const useOptionVillagePictures = (
+  params?: TVillagePicturesParams,
+  config?: UseQueryOptions<TPaginateResponse<TVillagePictureResponse>, TResponseError>,
 ) => {
   const [search, setSearch] = useState(params?.search ?? '');
   const [options, setOptions] = useState<SelectProps['options']>([]);
 
-  const customerSegementDataHook = useFetchCustomerSegments(
+  const villagePictureDataHook = useFetchVillagePictures(
     { ...params, search },
     {
       onSuccess: (data) => {
         setOptions(
           data.data.map((item) => ({
-            label: item.title,
+            label: item.photo,
             value: item.id,
           })),
         );
@@ -36,25 +35,26 @@ export const useOptionCustomerSegments = (
   );
 
   return {
-    customerSegementOptions: {
+    villagePictureOptions: {
       options,
       search,
       setSearch,
     },
-    customerSegementOptionDataHook: customerSegementDataHook,
+    villagePictureOptionDataHook: villagePictureDataHook,
   };
 };
 
-export const useCustomerSegmentForm = (id?: TPageProps['params']['id']) => {
+export const useVillagePictureForm = (id?: TPageProps['params']['id']) => {
   const ID = id ?? '';
 
-  const [form] = Form.useForm<TCustomerSegmentForm>();
+  const [form] = Form.useForm<TVillagePictureForm>();
+  const watchForm = Form.useWatch<TVillagePictureForm | undefined>([], form);
 
-  const createMutation = useCreateCustomerSegment();
-  const onCreate = (values: TCustomerSegmentForm) => {
+  const createMutation = useCreateVillagePicture();
+  const onCreate = (values: TVillagePictureForm) => {
     resetErrorForm(form);
 
-    return new Promise<TCustomerSegmentResponse>((resolve, reject) => {
+    return new Promise<TVillagePictureResponse>((resolve, reject) => {
       createMutation.mutate(values, {
         onSuccess: (data) => {
           successNotification();
@@ -69,11 +69,11 @@ export const useCustomerSegmentForm = (id?: TPageProps['params']['id']) => {
     });
   };
 
-  const updateMutation = useUpdateCustomerSegment();
-  const onUpdate = (values: TCustomerSegmentForm) => {
+  const updateMutation = useUpdateVillagePicture();
+  const onUpdate = (values: TVillagePictureForm) => {
     resetErrorForm(form);
 
-    return new Promise<TCustomerSegmentResponse>((resolve, reject) => {
+    return new Promise<TVillagePictureResponse>((resolve, reject) => {
       updateMutation.mutate(
         { id: ID, data: values },
         {
@@ -91,8 +91,8 @@ export const useCustomerSegmentForm = (id?: TPageProps['params']['id']) => {
     });
   };
 
-  const deleteMutation = useDeleteCustomerSegment();
-  const onDelete = (id: TProblemStatementResponse['id']) => {
+  const deleteMutation = useDeleteVillagePicture();
+  const onDelete = (id: TVillagePictureResponse['id']) => {
     return new Promise((resolve, reject) => {
       deleteMutation.mutate(id, {
         onSuccess: (data) => {
@@ -109,6 +109,7 @@ export const useCustomerSegmentForm = (id?: TPageProps['params']['id']) => {
 
   return {
     form,
+    watchForm,
     onCreate,
     onUpdate,
     onDelete,

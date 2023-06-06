@@ -48,6 +48,7 @@ export const useProblemStatementForm = (id?: TPageProps['params']['id']) => {
   const ID = id ?? '';
 
   const [form] = Form.useForm<TProblemStatementForm>();
+  const watchForm = Form.useWatch<TProblemStatementForm | undefined>([], form);
 
   const createMutation = useCreateProblemStatement();
   const onCreate = (values: TProblemStatementForm) => {
@@ -108,6 +109,7 @@ export const useProblemStatementForm = (id?: TPageProps['params']['id']) => {
 
   return {
     form,
+    watchForm,
     onCreate,
     onUpdate,
     onDelete,

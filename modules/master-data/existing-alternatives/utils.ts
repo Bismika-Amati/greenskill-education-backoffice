@@ -49,6 +49,7 @@ export const useExistingAlternativeForm = (id?: TPageProps['params']['id']) => {
   const ID = id ?? '';
 
   const [form] = Form.useForm<TExistingAlternativeForm>();
+  const watchForm = Form.useWatch<TExistingAlternativeForm | undefined>([], form);
 
   const createMutation = useCreateExistingAlternative();
   const onCreate = (values: TExistingAlternativeForm) => {
@@ -109,6 +110,7 @@ export const useExistingAlternativeForm = (id?: TPageProps['params']['id']) => {
 
   return {
     form,
+    watchForm,
     onCreate,
     onUpdate,
     onDelete,

@@ -1,12 +1,7 @@
 'use client';
 
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
-import {
-  CustomerSegmentCard,
-  EarlyAdopterCard,
-  ExistingAlternativeCard,
-  InterviewRecapCard,
-} from '@/components/organisms';
+import { ExistingAlternativeCard } from '@/components/organisms';
 import { TPageProps } from '@/modules/commons/entities';
 import { useFetchProblemStatementDetails } from '@/modules/master-data/problem-statements/hooks';
 import { useProblemStatementForm } from '@/modules/master-data/problem-statements/utils';
@@ -74,14 +69,6 @@ export default (props: TPageProps) => {
               </Form>
             </Card>
           </Col>
-
-          {/* <Col span={24} lg={12}>
-            <CustomerSegmentCard params={params} />
-          </Col>
-
-          <Col span={24} lg={12}>
-            <EarlyAdopterCard params={params} />
-          </Col> */}
 
           <Col span={24}>
             <ExistingAlternativeCard params={params} />
