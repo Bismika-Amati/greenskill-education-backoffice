@@ -44,7 +44,7 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
   };
 
   const onClose = () => {
-    setActivedId('')
+    setActivedId('');
     drawer.onTrigger();
     form.resetFields();
   };
