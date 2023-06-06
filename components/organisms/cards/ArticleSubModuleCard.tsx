@@ -1,29 +1,28 @@
 import { TPageProps } from '@/modules/commons/entities';
-import { Button, Card, Drawer, Form, Input, InputNumber, Space } from 'antd';
-import { OwnTable, useOwnPaginaiton } from '../tables';
-import { showDeleteConfirm, useOwnDrawer } from '@/utils/helpers/modal';
-import { useState } from 'react';
-import { useFetchSubModules } from '@/modules/master-data/sub-modules/hooks';
-import { useSubModuleForm } from '@/modules/master-data/sub-modules/utils';
+import { TArticleSubModuleForm, TArticleSubModuleResponse } from '@/modules/master-data/article-sub-modules/entities';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Card, Drawer, Form, Input, InputNumber, Space } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { TSubModuleForm, TSubModuleResponse } from '@/modules/master-data/sub-modules/entities';
-import { setRequired } from '@/utils/helpers/validations';
-import { FilePlace } from '@/modules/media/enums';
+import { OwnTable, useOwnPaginaiton } from '../tables';
+import { useFetchArticleSubModules } from '@/modules/master-data/article-sub-modules/hooks';
+import { useState } from 'react';
+import { showDeleteConfirm, useOwnDrawer } from '@/utils/helpers/modal';
+import { useArticleSubModuleForm } from '@/modules/master-data/article-sub-modules/utils';
 import { OwnUpload } from '@/components/atoms/inputs/OwnUpload';
-import { ArticleSubModuleCard } from './ArticleSubModuleCard';
+import { FilePlace } from '@/modules/media/enums';
+import { setRequired } from '@/utils/helpers/validations';
 
-type SubModuleCardProps = TPageProps;
+type ArticleSubModuleCardProps = TPageProps;
 
-export const SubModuleCard: React.FC<SubModuleCardProps> = (props) => {
+export const ArticleSubModuleCard: React.FC<ArticleSubModuleCardProps> = (props) => {
   const { params } = props;
 
   const { paginateParams, onChangePaginateParams } = useOwnPaginaiton();
-  const dataHook = useFetchSubModules(
+  const dataHook = useFetchArticleSubModules(
     {
       ...paginateParams,
       orderBy: 'number',
-      courseId: params.id,
+      subModuleId: params.id,
     },
     {
       enabled: !!params.id,
@@ -32,10 +31,10 @@ export const SubModuleCard: React.FC<SubModuleCardProps> = (props) => {
 
   const [activedId, setActivedId] = useState('');
   const drawer = useOwnDrawer();
-  const { form, watchForm, setForm, onCreate, onUpdate, onDelete } = useSubModuleForm(activedId);
+  const { form, watchForm, setForm, onCreate, onUpdate, onDelete } = useArticleSubModuleForm(activedId);
 
-  const onFinish = (values: TSubModuleForm) => {
-    values.courseId = params.id;
+  const onFinish = (values: TArticleSubModuleForm) => {
+    values.subModuleId = params.id;
     values.description = values.description || '';
     values.picture = values.picture || '';
     values.video = values.video || '';
@@ -53,13 +52,13 @@ export const SubModuleCard: React.FC<SubModuleCardProps> = (props) => {
     form.resetFields();
   };
 
-  const onEdit = (values: TSubModuleResponse) => {
+  const onEdit = (values: TArticleSubModuleResponse) => {
     setActivedId(values.id);
     drawer.onTrigger();
     setForm(values);
   };
 
-  const onRemove = (values: TSubModuleResponse) => {
+  const onRemove = (values: TArticleSubModuleResponse) => {
     showDeleteConfirm({
       onOk: () => {
         onDelete(values.id).then(() => {
@@ -69,7 +68,7 @@ export const SubModuleCard: React.FC<SubModuleCardProps> = (props) => {
     });
   };
 
-  const columns: ColumnsType<TSubModuleResponse> = [
+  const columns: ColumnsType<TArticleSubModuleResponse> = [
     {
       title: 'Number',
       dataIndex: 'number',
@@ -93,13 +92,9 @@ export const SubModuleCard: React.FC<SubModuleCardProps> = (props) => {
     },
   ];
 
-  const expandedRowRender = (record: TSubModuleResponse) => {
-    return <ArticleSubModuleCard params={{ ...params, id: record.id }} />;
-  };
-
   return (
     <Card
-      title="Sub Modules"
+      title="Articles"
       extra={
         <Button type="primary" onClick={drawer.onTrigger}>
           Add Item
@@ -112,7 +107,6 @@ export const SubModuleCard: React.FC<SubModuleCardProps> = (props) => {
         dataSource={dataHook.data?.data}
         meta={dataHook.data?.meta}
         onChange={onChangePaginateParams}
-        expandable={{ expandedRowRender }}
       />
 
       <Drawer title="Handle Existing Alternative" open={drawer.open} onClose={onClose}>
@@ -125,7 +119,7 @@ export const SubModuleCard: React.FC<SubModuleCardProps> = (props) => {
             <Input placeholder="Title" />
           </Form.Item>
 
-          <Form.Item name="description" label="Description">
+          <Form.Item name="description" label="Description" rules={[setRequired]}>
             <Input.TextArea placeholder="Description" />
           </Form.Item>
 
