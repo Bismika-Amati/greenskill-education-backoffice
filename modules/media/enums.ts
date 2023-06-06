@@ -1,5 +1,7 @@
 export enum FilePlace {
   VillagePicture = 'village-picture',
+  CoursePicture = 'course-picture',
+  SubModulePicture = 'submodule-picture',
 }
 
 export enum FileType {

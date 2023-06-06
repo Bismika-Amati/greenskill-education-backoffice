@@ -1,7 +1,7 @@
 'use client';
 
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
-import { VillagePictureCard } from '@/components/organisms/cards/VillagePicture';
+import { VillagePictureCard } from '@/components/organisms';
 import { TPageProps } from '@/modules/commons/entities';
 import { useOptionCities } from '@/modules/master-data/regions/cities/utils';
 import { useOptionDistricts } from '@/modules/master-data/regions/districts/utils';

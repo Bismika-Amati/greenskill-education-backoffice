@@ -1,10 +1,10 @@
-import { TPaginateParams, TPaginateResponse, TResponseError } from '@/modules/commons/entities';
+import { TPaginateResponse, TResponseError } from '@/modules/commons/entities';
 import { UseMutationResult, UseQueryOptions, UseQueryResult, useMutation, useQuery } from '@tanstack/react-query';
-import { TRoleForm, TRoleResponse, TUpdateRoleParams } from './entities';
+import { TRoleForm, TRoleResponse, TRolesParams, TUpdateRoleParams } from './entities';
 import { createRole, deleteRole, fetchRoleDetails, fetchRoles, updateRole } from './apis';
 
 export const useFetchRoles = (
-  params: TPaginateParams,
+  params: TRolesParams,
   options?: UseQueryOptions<TPaginateResponse<TRoleResponse>, TResponseError>,
 ): UseQueryResult<TPaginateResponse<TRoleResponse>, TResponseError> => {
   return useQuery({

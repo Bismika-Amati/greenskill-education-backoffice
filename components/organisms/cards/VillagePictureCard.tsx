@@ -15,8 +15,6 @@ import { FilePlace } from '@/modules/media/enums';
 type VillagePictureCardProps = TPageProps;
 
 export const VillagePictureCard: React.FC<VillagePictureCardProps> = (props) => {
-  const {} = props;
-
   const { params } = props;
 
   const { paginateParams, onChangePaginateParams } = useOwnPaginaiton();
@@ -45,6 +43,7 @@ export const VillagePictureCard: React.FC<VillagePictureCardProps> = (props) => 
   };
 
   const onClose = () => {
+    setActivedId('');
     drawer.onTrigger();
     form.resetFields();
   };

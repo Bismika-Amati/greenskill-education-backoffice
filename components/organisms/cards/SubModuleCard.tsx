@@ -1,28 +1,28 @@
 import { TPageProps } from '@/modules/commons/entities';
-import {
-  TExistingAlternativeForm,
-  TExistingAlternativeResponse,
-} from '@/modules/master-data/existing-alternatives/entities';
-import { useFetchExistingAlternatives } from '@/modules/master-data/existing-alternatives/hooks';
-import { useExistingAlternativeForm } from '@/modules/master-data/existing-alternatives/utils';
-import { useOwnDrawer, showDeleteConfirm } from '@/utils/helpers/modal';
-import { setRequired } from '@/utils/helpers/validations';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Space, Button, Card, Drawer, Form, Input } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import { Button, Card, Drawer, Form, Input, InputNumber, Space } from 'antd';
+import { OwnTable, useOwnPaginaiton } from '../tables';
+import { showDeleteConfirm, useOwnDrawer } from '@/utils/helpers/modal';
 import { useState } from 'react';
-import { useOwnPaginaiton, OwnTable } from '../tables';
+import { useFetchSubModules } from '@/modules/master-data/sub-modules/hooks';
+import { useSubModuleForm } from '@/modules/master-data/sub-modules/utils';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { ColumnsType } from 'antd/es/table';
+import { TSubModuleForm, TSubModuleResponse } from '@/modules/master-data/sub-modules/entities';
+import { setRequired } from '@/utils/helpers/validations';
+import { FilePlace } from '@/modules/media/enums';
+import { OwnUpload } from '@/components/atoms/inputs/OwnUpload';
 
-type ExistingAlternativeProps = TPageProps;
+type SubModuleCardProps = TPageProps;
 
-export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (props) => {
+export const SubModuleCard: React.FC<SubModuleCardProps> = (props) => {
   const { params } = props;
 
   const { paginateParams, onChangePaginateParams } = useOwnPaginaiton();
-  const dataHook = useFetchExistingAlternatives(
+  const dataHook = useFetchSubModules(
     {
       ...paginateParams,
-      problemStatementId: params.id,
+      orderBy: 'number',
+      courseId: params.id,
     },
     {
       enabled: !!params.id,
@@ -31,10 +31,13 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
 
   const [activedId, setActivedId] = useState('');
   const drawer = useOwnDrawer();
-  const { form, onCreate, onUpdate, onDelete } = useExistingAlternativeForm(activedId);
+  const { form, watchForm, setForm, onCreate, onUpdate, onDelete } = useSubModuleForm(activedId);
 
-  const onFinish = (values: TExistingAlternativeForm) => {
-    values.problemStatementId = params.id;
+  const onFinish = (values: TSubModuleForm) => {
+    values.courseId = params.id;
+    values.description = values.description || '';
+    values.picture = values.picture || '';
+    values.video = values.video || '';
 
     const onForm = activedId ? onUpdate(values) : onCreate(values);
     onForm.then(() => {
@@ -44,28 +47,32 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
   };
 
   const onClose = () => {
-    setActivedId('')
+    setActivedId('');
     drawer.onTrigger();
     form.resetFields();
   };
 
-  const onEdit = (data: TExistingAlternativeResponse) => {
-    setActivedId(data.id);
+  const onEdit = (values: TSubModuleResponse) => {
+    setActivedId(values.id);
     drawer.onTrigger();
-    form.setFieldsValue(data);
+    setForm(values);
   };
 
-  const onRemove = (data: TExistingAlternativeResponse) => {
+  const onRemove = (values: TSubModuleResponse) => {
     showDeleteConfirm({
       onOk: () => {
-        onDelete(data.id).then(() => {
+        onDelete(values.id).then(() => {
           dataHook.refetch();
         });
       },
     });
   };
 
-  const columns: ColumnsType<TExistingAlternativeResponse> = [
+  const columns: ColumnsType<TSubModuleResponse> = [
+    {
+      title: 'Number',
+      dataIndex: 'number',
+    },
     {
       title: 'Title',
       dataIndex: 'title',
@@ -85,7 +92,7 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
 
   return (
     <Card
-      title="Existing Alternatives"
+      title="Sub Modules"
       extra={
         <Button type="primary" onClick={drawer.onTrigger}>
           Add Item
@@ -102,12 +109,28 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
 
       <Drawer title="Handle Existing Alternative" open={drawer.open} onClose={onClose}>
         <Form form={form} layout="vertical" onFinish={onFinish}>
+          <Form.Item name="number" label="Number" rules={[setRequired]}>
+            <InputNumber placeholder="Number" style={{ width: '100%' }} />
+          </Form.Item>
+
           <Form.Item name="title" label="Title" rules={[setRequired]}>
             <Input placeholder="Title" />
           </Form.Item>
 
           <Form.Item name="description" label="Description">
             <Input.TextArea placeholder="Description" />
+          </Form.Item>
+
+          <Form.Item name="picture" label="Picture">
+            <OwnUpload
+              filePlace={FilePlace.SubModulePicture}
+              defaultFile={watchForm?.picture}
+              onUploaded={(filename) => form.setFieldValue('picture', filename)}
+            />
+          </Form.Item>
+
+          <Form.Item name="video" label="Video">
+            <Input placeholder="Video" />
           </Form.Item>
 
           <Form.Item>
