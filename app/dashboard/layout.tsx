@@ -36,6 +36,7 @@ function getItem(
 const menus: MenuItemType[] = [
   getItem('Dashboard', '/dashboard', <PieChartOutlined />),
   getItem('Course', '/dashboard/courses', <FileOutlined />),
+  getItem('User Course', '/dashboard/user-courses', <FileOutlined />),
   getItem('Village', '/dashboard/villages', <HomeOutlined />),
   getItem('Problem Statement', '/dashboard/problem-statements', <PaperClipOutlined />),
   getItem('Region', '/dashboard/regions', <GlobalOutlined />, [

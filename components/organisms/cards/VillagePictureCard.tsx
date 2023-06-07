@@ -30,7 +30,7 @@ export const VillagePictureCard: React.FC<VillagePictureCardProps> = (props) => 
 
   const [activedId, setActivedId] = useState('');
   const drawer = useOwnDrawer();
-  const { form, onCreate, onUpdate, onDelete } = useVillagePictureForm(activedId);
+  const { form, watchForm, onCreate, onUpdate, onDelete } = useVillagePictureForm(activedId);
 
   const onFinish = (values: TVillagePictureForm) => {
     values.villageId = params.id;
@@ -105,6 +105,7 @@ export const VillagePictureCard: React.FC<VillagePictureCardProps> = (props) => 
           <Form.Item name="photo" label="Photo" rules={[setRequired]}>
             <OwnUpload
               filePlace={FilePlace.VillagePicture}
+              defaultFile={watchForm?.photo}
               onUploaded={(filename) => form.setFieldValue('photo', filename)}
             />
           </Form.Item>
