@@ -116,7 +116,7 @@ export const VillagePictureCard: React.FC<VillagePictureCardProps> = (props) => 
         onChange={onChangePaginateParams}
       />
 
-      <Drawer title="Handle Existing Alternative" open={drawer.open} onClose={onClose}>
+      <Drawer title="Handle Village Picture" open={drawer.open} onClose={onClose}>
         <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item name="photo" label="Photo" rules={[setRequired]}>
             <OwnUpload

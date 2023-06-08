@@ -3,7 +3,7 @@ import { camelizeKeys } from 'humps';
 import { getSession, signOut } from 'next-auth/react';
 
 const axiosMl = Axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_ML_URL,
 });
 
 axiosMl.interceptors.response.use(

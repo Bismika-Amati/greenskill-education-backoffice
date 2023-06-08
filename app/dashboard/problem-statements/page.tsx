@@ -1,6 +1,6 @@
 'use client';
 
-import { OwnTable, useOwnPaginaiton } from '@/components/organisms';
+import { OwnTable, PredictProblemDrawer, useOwnPaginaiton } from '@/components/organisms';
 import { TProblemStatementResponse } from '@/modules/master-data/problem-statements/entities';
 import { useFetchProblemStatements } from '@/modules/master-data/problem-statements/hooks';
 import { useProblemStatementForm } from '@/modules/master-data/problem-statements/utils';
@@ -64,6 +64,7 @@ export default () => {
           title: 'Problem Statements',
         }}
         extra={[
+          <PredictProblemDrawer key="2" />,
           <Link key="1" href="/dashboard/problem-statements/create">
             <Button type="primary" icon={<PlusOutlined />}>
               Add Item

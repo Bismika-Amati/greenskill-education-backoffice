@@ -1,6 +1,6 @@
 import { TPageProps } from '@/modules/commons/entities';
 import { showDeleteConfirm, useOwnDrawer } from '@/utils/helpers/modal';
-import { Button, Card, Drawer, Form, Image, Input, Space } from 'antd';
+import { Button, Card, Drawer, Form, Input, Space } from 'antd';
 import { useState } from 'react';
 import { OwnTable, useOwnPaginaiton } from '../tables';
 import { useFetchProblemStatements } from '@/modules/master-data/problem-statements/hooks';
@@ -9,6 +9,7 @@ import { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useProblemStatementForm } from '@/modules/master-data/problem-statements/utils';
 import { setRequired } from '@/utils/helpers/validations';
+import { PredictProblemDrawer } from '../drawers';
 
 type ProblemStatementCardProps = TPageProps;
 
@@ -66,9 +67,8 @@ export const ProblemStatementCard: React.FC<ProblemStatementCardProps> = (props)
 
   const columns: ColumnsType<TProblemStatementResponse> = [
     {
-      title: 'Photo',
-      dataIndex: 'photo',
-      render: (value) => value && <Image width={200} src={value} />,
+      title: 'Topic',
+      dataIndex: 'topic',
     },
     {
       title: 'Action',
@@ -100,11 +100,14 @@ export const ProblemStatementCard: React.FC<ProblemStatementCardProps> = (props)
 
   return (
     <Card
-      title="Village Pictures"
+      title="Problem Statements"
       extra={
-        <Button type="primary" onClick={drawer.onTrigger} loading={createMutation.isLoading}>
-          Add Item
-        </Button>
+        <Space>
+          <PredictProblemDrawer villageId={params.id} dataHook={dataHook} />
+          <Button type="primary" onClick={drawer.onTrigger}>
+            Add Item
+          </Button>
+        </Space>
       }
     >
       <OwnTable
@@ -115,7 +118,7 @@ export const ProblemStatementCard: React.FC<ProblemStatementCardProps> = (props)
         onChange={onChangePaginateParams}
       />
 
-      <Drawer title="Handle Existing Alternative" open={drawer.open} onClose={onClose}>
+      <Drawer title="Handle Problem Statement" open={drawer.open} onClose={onClose}>
         <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item name="topic" label="Topic" rules={[setRequired]}>
             <Input placeholder="Topic" />
@@ -127,7 +130,11 @@ export const ProblemStatementCard: React.FC<ProblemStatementCardProps> = (props)
 
           <Form.Item>
             <Space align="end">
-              <Button type="primary" htmlType="submit" loading={updateMutation.isLoading}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={activedId ? updateMutation.isLoading : createMutation.isLoading}
+              >
                 Submit
               </Button>
             </Space>
