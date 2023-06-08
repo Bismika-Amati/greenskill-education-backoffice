@@ -2,8 +2,8 @@
 
 import { OwnTable, useOwnPaginaiton } from '@/components/organisms';
 import { TUserResponse } from '@/modules/master-data/users/entities';
-import { useDeleteUser, useFetchUsers } from '@/modules/master-data/users/hooks';
-import { failedNotification, successNotification } from '@/utils/helpers/alert';
+import { useFetchUsers } from '@/modules/master-data/users/hooks';
+import { useUserForm } from '@/modules/master-data/users/utils';
 import { showDeleteConfirm } from '@/utils/helpers/modal';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
@@ -17,18 +17,7 @@ export default () => {
     ...paginateParams,
   });
 
-  const deleteMutation = useDeleteUser();
-  const onDelete = (id: TUserResponse['id']) => {
-    deleteMutation.mutate(id, {
-      onSuccess: () => {
-        dataHook.refetch();
-        successNotification();
-      },
-      onError: () => {
-        failedNotification();
-      },
-    });
-  };
+  const { deleteMutation, onDelete } = useUserForm();
 
   const columns: ColumnsType<TUserResponse> = [
     {
@@ -57,6 +46,7 @@ export default () => {
             danger
             size="small"
             type="link"
+            loading={deleteMutation.isLoading}
             onClick={() =>
               showDeleteConfirm({
                 onOk: () => onDelete(record.id),

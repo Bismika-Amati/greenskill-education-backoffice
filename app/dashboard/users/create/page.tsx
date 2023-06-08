@@ -1,15 +1,15 @@
 'use client';
 
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
+import { OwnUpload } from '@/components/atoms/inputs/OwnUpload';
 import { useOptionCities } from '@/modules/master-data/regions/cities/utils';
 import { useOptionDistricts } from '@/modules/master-data/regions/districts/utils';
 import { useOptionProvinces } from '@/modules/master-data/regions/provinces/utils';
 import { useOptionSubDistricts } from '@/modules/master-data/regions/sub-districts/utils';
 import { useOptionRoles } from '@/modules/master-data/roles/utils';
 import { TUserForm } from '@/modules/master-data/users/entities';
-import { useCreateUser } from '@/modules/master-data/users/hooks';
-import { successNotification, failedNotification } from '@/utils/helpers/alert';
-import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
+import { useUserForm } from '@/modules/master-data/users/utils';
+import { FilePlace } from '@/modules/media/enums';
 import { setRequired, setValidEmail } from '@/utils/helpers/validations';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
@@ -18,23 +18,11 @@ import { useRouter } from 'next/navigation';
 export default () => {
   const router = useRouter();
 
-  const createMutation = useCreateUser();
+  const { form, watchForm, createMutation, onCreate } = useUserForm();
 
-  const [form] = Form.useForm<TUserForm>();
-  const watchForm = Form.useWatch<TUserForm | undefined>([], form);
   const onFinish = (values: TUserForm) => {
-    resetErrorForm(form);
-
-    values.photo = '';
-    createMutation.mutate(values, {
-      onSuccess: () => {
-        router.push('/dashboard/users');
-        successNotification();
-      },
-      onError: (data) => {
-        failedNotification();
-        setErrorForm(form, data.message);
-      },
+    onCreate(values).then((data) => {
+      router.push(`/dashboard/users/${data.id}`);
     });
   };
 
@@ -142,9 +130,16 @@ export default () => {
                   <Input.TextArea placeholder="Address" />
                 </Form.Item>
 
+                <Form.Item name="photo" label="Photo" rules={[setRequired]}>
+                  <OwnUpload
+                    filePlace={FilePlace.UserPicture}
+                    onUploaded={(filename) => form.setFieldValue('photo', filename)}
+                  />
+                </Form.Item>
+
                 <Form.Item>
                   <Space align="end">
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={createMutation.isLoading}>
                       Submit
                     </Button>
                   </Space>

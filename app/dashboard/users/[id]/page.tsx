@@ -1,25 +1,23 @@
 'use client';
 
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
+import { OwnUpload } from '@/components/atoms/inputs/OwnUpload';
 import { TPageProps } from '@/modules/commons/entities';
 import { useOptionCities } from '@/modules/master-data/regions/cities/utils';
 import { useOptionDistricts } from '@/modules/master-data/regions/districts/utils';
 import { useOptionProvinces } from '@/modules/master-data/regions/provinces/utils';
 import { useOptionSubDistricts } from '@/modules/master-data/regions/sub-districts/utils';
 import { useOptionRoles } from '@/modules/master-data/roles/utils';
-import { TUserForm } from '@/modules/master-data/users/entities';
-import { useFetchUserDetails, useUpdateUser } from '@/modules/master-data/users/hooks';
-import { successNotification, failedNotification } from '@/utils/helpers/alert';
-import { resetErrorForm, setErrorForm } from '@/utils/helpers/form';
+import { useFetchUserDetails } from '@/modules/master-data/users/hooks';
+import { useUserForm } from '@/modules/master-data/users/utils';
+import { FilePlace } from '@/modules/media/enums';
 import { setRequired, setValidEmail } from '@/utils/helpers/validations';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Space } from 'antd';
-import { useRouter } from 'next/navigation';
 
 export default (props: TPageProps) => {
   const { params } = props;
   const ID = params.id;
-  const router = useRouter();
 
   const detailHook = useFetchUserDetails(ID, {
     onSuccess: (data) => {
@@ -29,27 +27,8 @@ export default (props: TPageProps) => {
       });
     },
   });
-  const updateMutation = useUpdateUser();
 
-  const [form] = Form.useForm<TUserForm>();
-  const watchForm = Form.useWatch<TUserForm | undefined>([], form);
-  const onFinish = (values: TUserForm) => {
-    resetErrorForm(form);
-
-    updateMutation.mutate(
-      { id: ID, data: values },
-      {
-        onSuccess: () => {
-          router.push('/dashboard/users');
-          successNotification();
-        },
-        onError: (data) => {
-          failedNotification();
-          setErrorForm(form, data.message);
-        },
-      },
-    );
-  };
+  const { form, watchForm, updateMutation, onUpdate } = useUserForm(ID);
 
   const { roleOptions, roleOptionDataHook } = useOptionRoles();
   const { provinceOptions, provinceOptionDataHook } = useOptionProvinces();
@@ -82,7 +61,7 @@ export default (props: TPageProps) => {
         <OwnRow>
           <Col span={24} lg={12}>
             <Card>
-              <Form form={form} layout="vertical" onFinish={onFinish}>
+              <Form form={form} layout="vertical" onFinish={onUpdate}>
                 <Form.Item name="fullname" label="Fullname" rules={[setRequired]}>
                   <Input placeholder="Fullname" />
                 </Form.Item>
@@ -155,9 +134,17 @@ export default (props: TPageProps) => {
                   <Input.TextArea placeholder="Address" />
                 </Form.Item>
 
+                <Form.Item name="photo" label="Photo" rules={[setRequired]}>
+                  <OwnUpload
+                    filePlace={FilePlace.UserPicture}
+                    defaultFile={watchForm?.photo}
+                    onUploaded={(filename) => form.setFieldValue('photo', filename)}
+                  />
+                </Form.Item>
+
                 <Form.Item>
                   <Space align="end">
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={updateMutation.isLoading}>
                       Submit
                     </Button>
                   </Space>
