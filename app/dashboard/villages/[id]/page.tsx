@@ -2,6 +2,7 @@
 
 import { OwnRow, OwnSearchSelect } from '@/components/atoms';
 import { VillagePictureCard } from '@/components/organisms';
+import { ProblemStatementCard } from '@/components/organisms/cards/ProblemStatementCard';
 import { TPageProps } from '@/modules/commons/entities';
 import { useOptionCities } from '@/modules/master-data/regions/cities/utils';
 import { useOptionDistricts } from '@/modules/master-data/regions/districts/utils';
@@ -179,8 +180,12 @@ export default (props: TPageProps) => {
             </Card>
           </Col>
 
-          <Col span={24}>
+          <Col span={24} lg={12}>
             <VillagePictureCard params={params} />
+          </Col>
+
+          <Col span={24}>
+            <ProblemStatementCard params={params} />
           </Col>
         </OwnRow>
       </PageContainer>

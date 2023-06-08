@@ -1,4 +1,4 @@
-import { TPaginateParams, TPaginateResponse, TResponseError } from '@/modules/commons/entities';
+import { TPaginateResponse, TResponseError } from '@/modules/commons/entities';
 import { UseMutationResult, UseQueryOptions, UseQueryResult, useMutation, useQuery } from '@tanstack/react-query';
 import {
   createProblemStatement,
@@ -7,10 +7,15 @@ import {
   fetchProblemStatementDetails,
   updateProblemStatement,
 } from './apis';
-import { TProblemStatementForm, TProblemStatementResponse, TUpdateProblemStatementParams } from './entities';
+import {
+  TProblemStatementForm,
+  TProblemStatementResponse,
+  TProblemStatementsParams,
+  TUpdateProblemStatementParams,
+} from './entities';
 
 export const useFetchProblemStatements = (
-  params: TPaginateParams,
+  params: TProblemStatementsParams,
   options?: UseQueryOptions<TPaginateResponse<TProblemStatementResponse>, TResponseError>,
 ): UseQueryResult<TPaginateResponse<TProblemStatementResponse>, TResponseError> => {
   return useQuery({
