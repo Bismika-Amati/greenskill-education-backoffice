@@ -36,7 +36,7 @@ export default () => {
       render: (_, record) => (
         <Space>
           <Link href={`/dashboard/problem-statements/${record.id}`}>
-            <Button icon={<EditOutlined />} size="small" type="link" loading={deleteMutation.isLoading}/>
+            <Button icon={<EditOutlined />} size="small" type="link" loading={deleteMutation.isLoading} />
           </Link>
           <Button
             icon={<DeleteOutlined />}
