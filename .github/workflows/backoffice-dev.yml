@@ -35,6 +35,7 @@ jobs:
             sudo docker build --no-cache \
               --build-arg NEXT_PUBLIC_BASE_URL="http://34.128.92.185:4002" \
               --build-arg NEXT_PUBLIC_API_URL="http://34.128.92.185:3002/api" \
+              --build-arg NEXT_PUBLIC_API_ML_URL="http://34.128.92.185:5000" \
               --build-arg NEXTAUTH_URL="http://34.128.92.185:4002" \
               --build-arg NEXTAUTH_SECRET="dokumenrahasia" \
               -t $IMAGE_NAME:$IMAGE_TAG \

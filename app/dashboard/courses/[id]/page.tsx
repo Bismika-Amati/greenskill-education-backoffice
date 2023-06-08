@@ -2,7 +2,7 @@
 
 import { OwnRow } from '@/components/atoms';
 import { OwnUpload } from '@/components/atoms/inputs/OwnUpload';
-import { SubModuleCard } from '@/components/organisms';
+import { CourseSkillCard, SubModuleCard } from '@/components/organisms';
 import { TPageProps } from '@/modules/commons/entities';
 import { useFetchCourseDetails } from '@/modules/master-data/courses/hooks';
 import { useCourseForm } from '@/modules/master-data/courses/utils';
@@ -84,6 +84,10 @@ export default (props: TPageProps) => {
                 </Form.Item>
               </Form>
             </Card>
+          </Col>
+
+          <Col span={24} lg={12}>
+            <CourseSkillCard params={params} />
           </Col>
 
           <Col span={24}>
