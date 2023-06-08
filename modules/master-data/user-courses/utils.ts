@@ -74,5 +74,8 @@ export const useUserCourseForm = (id?: TPageProps['params']['id']) => {
     onCreate,
     onUpdate,
     onDelete,
+    createMutation,
+    updateMutation,
+    deleteMutation,
   };
 };

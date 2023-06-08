@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 export default () => {
   const router = useRouter();
 
-  const { form, onCreate } = useProblemStatementForm();
+  const { form, onCreate, createMutation } = useProblemStatementForm();
 
   const { villageOptions, villageOptionDataHook } = useOptionVillages();
 
@@ -52,7 +52,7 @@ export default () => {
 
                 <Form.Item>
                   <Space align="end">
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={createMutation.isLoading}>
                       Submit
                     </Button>
                   </Space>

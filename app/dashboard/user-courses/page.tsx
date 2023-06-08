@@ -17,7 +17,7 @@ export default () => {
     ...paginateParams,
   });
 
-  const { onDelete } = useUserCourseForm();
+  const { onDelete, deleteMutation } = useUserCourseForm();
 
   const columns: ColumnsType<TUserCourseResponse> = [
     {
@@ -37,7 +37,7 @@ export default () => {
       render: (_, record) => (
         <Space>
           <Link href={`/dashboard/user-courses/${record.id}`}>
-            <Button icon={<EditOutlined />} size="small" type="link" />
+            <Button icon={<EditOutlined />} size="small" type="link" loading={deleteMutation.isLoading} />
           </Link>
           <Button
             icon={<DeleteOutlined />}

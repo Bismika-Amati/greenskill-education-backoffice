@@ -14,7 +14,7 @@ export default (props: TPageProps) => {
   const { params } = props;
   const ID = params.id;
 
-  const { form, onUpdate } = useUserCourseForm(ID);
+  const { form, onUpdate, updateMutation } = useUserCourseForm(ID);
   const detailHook = useFetchUserCourseDetails(ID, {
     onSuccess: (data) => {
       form.setFieldsValue({
@@ -69,7 +69,7 @@ export default (props: TPageProps) => {
 
                 <Form.Item>
                   <Space align="end">
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={updateMutation.isLoading}>
                       Submit
                     </Button>
                   </Space>

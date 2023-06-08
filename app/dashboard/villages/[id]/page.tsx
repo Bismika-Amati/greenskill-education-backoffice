@@ -30,7 +30,7 @@ export default (props: TPageProps) => {
       });
     },
   });
-  const { form, watchForm, onUpdate } = useVillageForm(ID);
+  const { form, watchForm, onUpdate, updateMutation } = useVillageForm(ID);
 
   const onFinish = (values: TVillageForm) => {
     resetErrorForm(form);
@@ -170,7 +170,7 @@ export default (props: TPageProps) => {
 
                 <Form.Item>
                   <Space align="end">
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={updateMutation.isLoading}>
                       Submit
                     </Button>
                   </Space>

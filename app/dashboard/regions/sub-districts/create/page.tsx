@@ -37,7 +37,7 @@ export default () => {
     <>
       <PageContainer
         header={{
-          title: 'Create SubD istrict',
+          title: 'Create Sub District',
         }}
       >
         <OwnRow>

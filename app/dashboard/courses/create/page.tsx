@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 export default () => {
   const router = useRouter();
 
-  const { form, onCreate } = useCourseForm();
+  const { form, onCreate, createMutation } = useCourseForm();
 
   const onFinish = (values: TCourseForm) => {
     resetErrorForm(form);
@@ -64,7 +64,7 @@ export default () => {
 
                 <Form.Item>
                   <Space align="end">
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={createMutation.isLoading}>
                       Submit
                     </Button>
                   </Space>

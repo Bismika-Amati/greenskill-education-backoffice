@@ -120,5 +120,8 @@ export const useSubModuleForm = (id?: TPageProps['params']['id']) => {
     onCreate,
     onUpdate,
     onDelete,
+    createMutation,
+    updateMutation,
+    deleteMutation,
   };
 };

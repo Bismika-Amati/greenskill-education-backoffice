@@ -109,5 +109,8 @@ export const useCourseSkillForm = (id?: TPageProps['params']['id']) => {
     onCreate,
     onUpdate,
     onDelete,
+    createMutation,
+    updateMutation,
+    deleteMutation,
   };
 };

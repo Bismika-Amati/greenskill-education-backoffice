@@ -113,5 +113,8 @@ export const useVillagePictureForm = (id?: TPageProps['params']['id']) => {
     onCreate,
     onUpdate,
     onDelete,
+    createMutation,
+    updateMutation,
+    deleteMutation,
   };
 };

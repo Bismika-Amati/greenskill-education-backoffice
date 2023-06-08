@@ -31,7 +31,8 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
 
   const [activedId, setActivedId] = useState('');
   const drawer = useOwnDrawer();
-  const { form, onCreate, onUpdate, onDelete } = useExistingAlternativeForm(activedId);
+  const { form, onCreate, onUpdate, onDelete, createMutation, updateMutation, deleteMutation } =
+    useExistingAlternativeForm(activedId);
 
   const onFinish = (values: TExistingAlternativeForm) => {
     values.problemStatementId = params.id;
@@ -76,8 +77,23 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
       width: 100,
       render: (_, record) => (
         <Space>
-          <Button key={1} icon={<EditOutlined />} size="small" type="link" onClick={() => onEdit(record)} />
-          <Button key={2} icon={<DeleteOutlined />} danger size="small" type="link" onClick={() => onRemove(record)} />
+          <Button
+            key={1}
+            icon={<EditOutlined />}
+            size="small"
+            type="link"
+            onClick={() => onEdit(record)}
+            loading={updateMutation.isLoading}
+          />
+          <Button
+            key={2}
+            icon={<DeleteOutlined />}
+            danger
+            size="small"
+            type="link"
+            onClick={() => onRemove(record)}
+            loading={deleteMutation.isLoading}
+          />
         </Space>
       ),
     },
@@ -87,7 +103,7 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
     <Card
       title="Existing Alternatives"
       extra={
-        <Button type="primary" onClick={drawer.onTrigger}>
+        <Button type="primary" onClick={drawer.onTrigger} loading={createMutation.isLoading}>
           Add Item
         </Button>
       }
@@ -112,7 +128,7 @@ export const ExistingAlternativeCard: React.FC<ExistingAlternativeProps> = (prop
 
           <Form.Item>
             <Space align="end">
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={updateMutation.isLoading}>
                 Submit
               </Button>
             </Space>

@@ -31,7 +31,8 @@ export const ArticleSubModuleCard: React.FC<ArticleSubModuleCardProps> = (props)
 
   const [activedId, setActivedId] = useState('');
   const drawer = useOwnDrawer();
-  const { form, watchForm, setForm, onCreate, onUpdate, onDelete } = useArticleSubModuleForm(activedId);
+  const { form, watchForm, setForm, onCreate, onUpdate, onDelete, createMutation, updateMutation, deleteMutation } =
+    useArticleSubModuleForm(activedId);
 
   const onFinish = (values: TArticleSubModuleForm) => {
     values.subModuleId = params.id;
@@ -85,8 +86,23 @@ export const ArticleSubModuleCard: React.FC<ArticleSubModuleCardProps> = (props)
       width: 100,
       render: (_, record) => (
         <Space>
-          <Button key={1} icon={<EditOutlined />} size="small" type="link" onClick={() => onEdit(record)} />
-          <Button key={2} icon={<DeleteOutlined />} danger size="small" type="link" onClick={() => onRemove(record)} />
+          <Button
+            key={1}
+            icon={<EditOutlined />}
+            size="small"
+            type="link"
+            onClick={() => onEdit(record)}
+            loading={updateMutation.isLoading}
+          />
+          <Button
+            key={2}
+            icon={<DeleteOutlined />}
+            danger
+            size="small"
+            type="link"
+            onClick={() => onRemove(record)}
+            loading={deleteMutation.isLoading}
+          />
         </Space>
       ),
     },
@@ -96,7 +112,7 @@ export const ArticleSubModuleCard: React.FC<ArticleSubModuleCardProps> = (props)
     <Card
       title="Articles"
       extra={
-        <Button type="primary" onClick={drawer.onTrigger}>
+        <Button type="primary" onClick={drawer.onTrigger} loading={createMutation.isLoading}>
           Add Item
         </Button>
       }
@@ -137,7 +153,7 @@ export const ArticleSubModuleCard: React.FC<ArticleSubModuleCardProps> = (props)
 
           <Form.Item>
             <Space align="end">
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={updateMutation.isLoading}>
                 Submit
               </Button>
             </Space>

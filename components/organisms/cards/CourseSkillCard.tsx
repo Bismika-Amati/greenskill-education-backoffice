@@ -28,7 +28,8 @@ export const CourseSkillCard: React.FC<CourseSkillProps> = (props) => {
 
   const [activedId, setActivedId] = useState('');
   const drawer = useOwnDrawer();
-  const { form, onCreate, onUpdate, onDelete } = useCourseSkillForm(activedId);
+  const { form, onCreate, onUpdate, onDelete, createMutation, updateMutation, deleteMutation } =
+    useCourseSkillForm(activedId);
 
   const onFinish = (values: TCourseSkillForm) => {
     values.courseId = params.id;
@@ -74,8 +75,23 @@ export const CourseSkillCard: React.FC<CourseSkillProps> = (props) => {
       width: 100,
       render: (_, record) => (
         <Space>
-          <Button key={1} icon={<EditOutlined />} size="small" type="link" onClick={() => onEdit(record)} />
-          <Button key={2} icon={<DeleteOutlined />} danger size="small" type="link" onClick={() => onRemove(record)} />
+          <Button
+            key={1}
+            icon={<EditOutlined />}
+            size="small"
+            type="link"
+            onClick={() => onEdit(record)}
+            loading={updateMutation.isLoading}
+          />
+          <Button
+            key={2}
+            icon={<DeleteOutlined />}
+            danger
+            size="small"
+            type="link"
+            onClick={() => onRemove(record)}
+            loading={deleteMutation.isLoading}
+          />
         </Space>
       ),
     },
@@ -85,7 +101,7 @@ export const CourseSkillCard: React.FC<CourseSkillProps> = (props) => {
     <Card
       title="Course Skills"
       extra={
-        <Button type="primary" onClick={drawer.onTrigger}>
+        <Button type="primary" onClick={drawer.onTrigger} loading={createMutation.isLoading}>
           Add Item
         </Button>
       }
@@ -110,7 +126,7 @@ export const CourseSkillCard: React.FC<CourseSkillProps> = (props) => {
 
           <Form.Item>
             <Space align="end">
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={updateMutation.isLoading}>
                 Submit
               </Button>
             </Space>

@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 export default () => {
   const router = useRouter();
 
-  const { form, watchForm, onCreate } = useVillageForm();
+  const { form, watchForm, onCreate, createMutation } = useVillageForm();
 
   const onFinish = (values: TVillageForm) => {
     resetErrorForm(form);
@@ -129,7 +129,7 @@ export default () => {
 
                 <Form.Item>
                   <Space align="end">
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={createMutation.isLoading}>
                       Submit
                     </Button>
                   </Space>

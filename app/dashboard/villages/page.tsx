@@ -17,7 +17,7 @@ export default () => {
     ...paginateParams,
   });
 
-  const { onDelete } = useVillageForm();
+  const { onDelete, deleteMutation } = useVillageForm();
 
   const columns: ColumnsType<TVillageResponse> = [
     {
@@ -31,7 +31,7 @@ export default () => {
       render: (_, record) => (
         <Space>
           <Link href={`/dashboard/villages/${record.id}`}>
-            <Button icon={<EditOutlined />} size="small" type="link" />
+            <Button icon={<EditOutlined />} size="small" type="link" loading={deleteMutation.isLoading} />
           </Link>
           <Button
             icon={<DeleteOutlined />}

@@ -113,5 +113,8 @@ export const useProblemStatementForm = (id?: TPageProps['params']['id']) => {
     onCreate,
     onUpdate,
     onDelete,
+    createMutation,
+    updateMutation,
+    deleteMutation,
   };
 };
