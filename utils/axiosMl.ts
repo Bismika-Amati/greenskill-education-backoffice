@@ -2,7 +2,7 @@ import Axios, { AxiosError, AxiosResponse } from 'axios';
 import { camelizeKeys } from 'humps';
 
 const axiosMl = Axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_ML_URL,
+  baseURL: 'http://34.128.92.185:5000',
 });
 
 axiosMl.interceptors.response.use(
